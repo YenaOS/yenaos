@@ -1,3 +1,5 @@
 {
-  "singleQuote": false
+  "jsonRecursiveSort": true,
+  "plugins": ["prettier-plugin-sort-json"],
+  "singleQuote": true
 }

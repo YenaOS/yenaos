@@ -1,9 +1,8 @@
 {
-  "name": "os",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/os/src",
+  "name": "os",
   "projectType": "application",
+  "sourceRoot": "apps/os/src",
   "tags": [],
-  "// targets": "to see all targets run: nx show project os --web",
   "targets": {}
 }

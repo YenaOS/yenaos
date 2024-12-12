@@ -1,11 +1,10 @@
-dist
-node_modules
+/coverage
+/dist
+/node_modules
 
 # Nx
-
-.nx/cache
-.nx/workspace-data
+/.nx/cache
+/.nx/workspace-data
 
 # Vite
-
 vite.config.*.timestamp*

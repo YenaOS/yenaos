@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "types": [
@@ -23,5 +22,6 @@
     "vitest.config.ts",
     "vitest.config.mts"
   ],
+  "extends": "./tsconfig.json",
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }
