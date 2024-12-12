@@ -1,0 +1,9 @@
+{
+  "name": "os-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/os-e2e/src",
+  "implicitDependencies": ["os"],
+  "// targets": "to see all targets run: nx show project os-e2e --web",
+  "targets": {}
+}
