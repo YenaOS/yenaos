@@ -40,32 +40,32 @@ export const Calculator = () => {
   return (
     <Box>
       <Input
-        readOnly
-        value={displayedValue || 0}
+        fullWidth
         inputProps={{
           style: {
             textAlign: 'right',
           },
         }}
-        fullWidth
+        readOnly
+        value={displayedValue || 0}
       />
       <Stack direction="row">
         <Box>
           <Box>
-            <Tooltip title="Clear (Esc); Clear All (Opt-Esc)" describeChild>
+            <Tooltip describeChild title="Clear (Esc); Clear All (Opt-Esc)">
               <Button aria-label="Clear" onClick={handleClear}>
                 AC
               </Button>
             </Tooltip>
             <Tooltip
-              title="Negate the displayed value (or press Option-Minus [-])"
               describeChild
+              title="Negate the displayed value (or press Option-Minus [-])"
             >
               <Button aria-label="Negate" onClick={handleNegate}>
                 +/-
               </Button>
             </Tooltip>
-            <Tooltip title="Per cent (or press %)" describeChild>
+            <Tooltip describeChild title="Per cent (or press %)">
               <Button aria-label="Per cent" onClick={handlePercent}>
                 %
               </Button>
@@ -86,7 +86,7 @@ export const Calculator = () => {
           </Box>
         </Box>
         <Stack direction="column">
-          <Tooltip title="Divide (or press /)" describeChild>
+          <Tooltip describeChild title="Divide (or press /)">
             <Button
               aria-label="Divide"
               onClick={handleOperation(Operation.Divide)}
@@ -94,7 +94,7 @@ export const Calculator = () => {
               /
             </Button>
           </Tooltip>
-          <Tooltip title="Multiply (or press *)" describeChild>
+          <Tooltip describeChild title="Multiply (or press *)">
             <Button
               aria-label="Multiply"
               onClick={handleOperation(Operation.Multiply)}
@@ -102,7 +102,7 @@ export const Calculator = () => {
               x
             </Button>
           </Tooltip>
-          <Tooltip title="Subtract (or press -)" describeChild>
+          <Tooltip describeChild title="Subtract (or press -)">
             <Button
               aria-label="Subtract"
               onClick={handleOperation(Operation.Subtract)}
@@ -110,12 +110,12 @@ export const Calculator = () => {
               -
             </Button>
           </Tooltip>
-          <Tooltip title="Add (or press +)" describeChild>
+          <Tooltip describeChild title="Add (or press +)">
             <Button aria-label="Add" onClick={handleOperation(Operation.Add)}>
               +
             </Button>
           </Tooltip>
-          <Tooltip title="Equal (or press Return)" describeChild>
+          <Tooltip describeChild title="Equal (or press Return)">
             <Button aria-label="Equal" onClick={handleEqual}>
               =
             </Button>
