@@ -1,16 +1,7 @@
-import styled from 'styled-components';
-import NxWelcome from './nx-welcome';
-
-const StyledApp = styled.div`
-  // Your style here
-`;
+import { Calculator } from './Calculator/Calculator';
 
 export function App() {
-  return (
-    <StyledApp>
-      <NxWelcome title="os" />
-    </StyledApp>
-  );
+  return <Calculator />;
 }
 
 export default App;
