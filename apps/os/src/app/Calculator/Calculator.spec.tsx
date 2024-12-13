@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { range } from 'lodash';
 import type { ReactNode } from 'react';
 
+import '../../i18n';
 import { Calculator } from './Calculator';
 
 const renderWithProviders = (ui: ReactNode) => ({

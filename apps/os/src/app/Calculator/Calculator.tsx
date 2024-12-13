@@ -1,6 +1,7 @@
 import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
-import { useState } from 'react';
 import { range } from 'lodash';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const digits = range(0, 10);
 
@@ -14,6 +15,8 @@ enum Operation {
 }
 
 export const Calculator = () => {
+  const { t } = useTranslation('calculator');
+
   const [displayedValue, setDisplayedValue] = useState('');
 
   const [operand, setOperand] = useState('');
@@ -77,21 +80,22 @@ export const Calculator = () => {
       <Stack direction="row">
         <Box>
           <Stack direction="row">
-            <Tooltip describeChild title="Clear (Esc); Clear All (Opt-Esc)">
-              <Button aria-label="Clear" fullWidth onClick={handleClear}>
+            <Tooltip describeChild title={t('clearTooltip')}>
+              <Button aria-label={t('clear')} fullWidth onClick={handleClear}>
                 {displayedValue ? 'C' : 'AC'}
               </Button>
             </Tooltip>
-            <Tooltip
-              describeChild
-              title="Negate the displayed value (or press Option-Minus [-])"
-            >
-              <Button aria-label="Negate" fullWidth onClick={handleNegate}>
+            <Tooltip describeChild title={t('negateTooltip')}>
+              <Button aria-label={t('negate')} fullWidth onClick={handleNegate}>
                 +/-
               </Button>
             </Tooltip>
-            <Tooltip describeChild title="Per cent (or press %)">
-              <Button aria-label="Per cent" fullWidth onClick={handlePercent}>
+            <Tooltip describeChild title={t('perCentTooltip')}>
+              <Button
+                aria-label={t('perCent')}
+                fullWidth
+                onClick={handlePercent}
+              >
                 %
               </Button>
             </Tooltip>
@@ -108,7 +112,7 @@ export const Calculator = () => {
                 [
                   <Grid2 key="decimal-point" size={1}>
                     <Button
-                      aria-label="Decimal point"
+                      aria-label={t('decimalPoint')}
                       fullWidth
                       onClick={handleDecimalPoint}
                     >
@@ -126,37 +130,40 @@ export const Calculator = () => {
           </Grid2>
         </Box>
         <Stack direction="column">
-          <Tooltip describeChild title="Divide (or press /)">
+          <Tooltip describeChild title={t('divideTooltip')}>
             <Button
-              aria-label="Divide"
+              aria-label={t('divide')}
               onClick={handleOperation(Operation.Divide)}
             >
               /
             </Button>
           </Tooltip>
-          <Tooltip describeChild title="Multiply (or press *)">
+          <Tooltip describeChild title={t('multiplyTooltip')}>
             <Button
-              aria-label="Multiply"
+              aria-label={t('multiply')}
               onClick={handleOperation(Operation.Multiply)}
             >
               x
             </Button>
           </Tooltip>
-          <Tooltip describeChild title="Subtract (or press -)">
+          <Tooltip describeChild title={t('subtractTooltip')}>
             <Button
-              aria-label="Subtract"
+              aria-label={t('subtract')}
               onClick={handleOperation(Operation.Subtract)}
             >
               -
             </Button>
           </Tooltip>
-          <Tooltip describeChild title="Add (or press +)">
-            <Button aria-label="Add" onClick={handleOperation(Operation.Add)}>
+          <Tooltip describeChild title={t('addTooltip')}>
+            <Button
+              aria-label={t('add')}
+              onClick={handleOperation(Operation.Add)}
+            >
               +
             </Button>
           </Tooltip>
-          <Tooltip describeChild title="Equal (or press Return)">
-            <Button aria-label="Equal" onClick={handleEqual}>
+          <Tooltip describeChild title={t('equalTooltip')}>
+            <Button aria-label={t('equal')} onClick={handleEqual}>
               =
             </Button>
           </Tooltip>

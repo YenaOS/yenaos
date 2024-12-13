@@ -1,0 +1,19 @@
+{
+  "add": "Add",
+  "addTooltip": "Add (or press +)",
+  "clear": "Clear",
+  "clearTooltip": "Clear (Esc); Clear All (Opt-Esc)",
+  "decimalPoint": "Decimal point",
+  "divide": "Divide",
+  "divideTooltip": "Divide (or press /)",
+  "equal": "Equal",
+  "equalTooltip": "Equal (or press Return)",
+  "multiply": "Multiply",
+  "multiplyTooltip": "Multiply (or press *)",
+  "negate": "Negate",
+  "negateTooltip": "Negate the displayed value (or press Option-Minus [-])",
+  "perCent": "Per cent",
+  "perCentTooltip": "Per cent (or press %)",
+  "subtract": "Subtract",
+  "subtractTooltip": "Subtract (or press -)"
+}
