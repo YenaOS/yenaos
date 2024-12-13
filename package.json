@@ -35,6 +35,7 @@
     "@swc/plugin-styled-components": "^1.5.67",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "15.0.6",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "18.16.9",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",

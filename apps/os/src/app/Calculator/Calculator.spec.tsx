@@ -1,13 +1,20 @@
 import '@testing-library/jest-dom/vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { Calculator } from './Calculator';
+import type { ReactNode } from 'react';
+
+const renderWithProviders = (ui: ReactNode) => ({
+  ...render(ui),
+  user: userEvent.setup(),
+});
 
 describe(Calculator, () => {
   it('should display tooltip for Clear', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /clear/i }));
+    await user.hover(screen.getByRole('button', { name: /clear/i }));
 
     expect(
       await screen.findByRole('tooltip', {
@@ -17,9 +24,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Negate', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /negate/i }));
+    await user.hover(screen.getByRole('button', { name: /negate/i }));
 
     expect(
       await screen.findByRole('tooltip', {
@@ -29,9 +36,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Per cent', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /per cent/i }));
+    await user.hover(screen.getByRole('button', { name: /per cent/i }));
 
     expect(
       await screen.findByRole('tooltip', { name: /per cent \(or press %\)/i }),
@@ -39,9 +46,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Divide', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /divide/i }));
+    await user.hover(screen.getByRole('button', { name: /divide/i }));
 
     expect(
       await screen.findByRole('tooltip', { name: /divide \(or press \/\)/i }),
@@ -49,9 +56,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Multiply', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /multiply/i }));
+    await user.hover(screen.getByRole('button', { name: /multiply/i }));
 
     expect(
       await screen.findByRole('tooltip', { name: /multiply \(or press \*\)/i }),
@@ -59,9 +66,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Subtract', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /subtract/i }));
+    await user.hover(screen.getByRole('button', { name: /subtract/i }));
 
     expect(
       await screen.findByRole('tooltip', { name: /subtract \(or press -\)/i }),
@@ -69,9 +76,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Add', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /add/i }));
+    await user.hover(screen.getByRole('button', { name: /add/i }));
 
     expect(
       await screen.findByRole('tooltip', { name: /add \(or press \+\)/i }),
@@ -79,9 +86,9 @@ describe(Calculator, () => {
   });
 
   it('should display tooltip for Equal', async () => {
-    render(<Calculator />);
+    const { user } = renderWithProviders(<Calculator />);
 
-    fireEvent.mouseOver(screen.getByRole('button', { name: /equal/i }));
+    await user.hover(screen.getByRole('button', { name: /equal/i }));
 
     expect(
       await screen.findByRole('tooltip', {
