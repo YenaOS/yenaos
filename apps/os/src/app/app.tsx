@@ -1,7 +1,5 @@
 import { Calculator } from './Calculator/Calculator';
 
-export function App() {
-  return <Calculator />;
-}
+export const App = () => <Calculator />;
 
 export default App;
