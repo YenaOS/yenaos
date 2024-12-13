@@ -55,7 +55,7 @@ export const Calculator = () => {
       return;
     }
 
-    setDisplayedValue(displayedValue || defaultDisplayValue + ',');
+    setDisplayedValue((displayedValue || defaultDisplayValue) + ',');
   };
 
   const handleOperation = (value: Operation) => () => setOperation(value);

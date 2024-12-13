@@ -66,6 +66,44 @@ describe(Calculator, () => {
     });
   });
 
+  describe('decimal point action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
+
+      expect(
+        screen.getByRole('button', { name: /decimal point/i }),
+      ).toBeInTheDocument();
+    });
+
+    it('should append decimal point when no display value', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /decimal point/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0,');
+    });
+
+    it('should append decimal point', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /decimal point/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('1,');
+    });
+
+    it('should do nothing when decimal point is already present', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /decimal point/i }));
+
+      await user.click(screen.getByRole('button', { name: /decimal point/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0,');
+    });
+  });
+
   describe('clear action', () => {
     it('should render button', () => {
       renderWithProviders(<Calculator />);
