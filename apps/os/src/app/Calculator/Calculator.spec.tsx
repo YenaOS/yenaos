@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { range } from 'lodash';
+import type { ReactNode } from 'react';
 
 import { Calculator } from './Calculator';
-import type { ReactNode } from 'react';
-import { range } from 'lodash';
 
 const renderWithProviders = (ui: ReactNode) => ({
   ...render(ui),
