@@ -2,7 +2,9 @@ import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { range } from 'lodash';
 
-const defaultDisplayValue = '0';
+const digits = range(0, 10);
+
+const defaultDisplayValue = digits[0].toString();
 
 enum Operation {
   Add = '+',
@@ -12,20 +14,20 @@ enum Operation {
 }
 
 export const Calculator = () => {
-  const [displayedValue, setDisplayedValue] = useState(defaultDisplayValue);
+  const [displayedValue, setDisplayedValue] = useState('');
 
   const [operand, setOperand] = useState('');
   const [operation, setOperation] = useState<Operation | undefined>();
 
   const handleClear = () => {
-    setDisplayedValue(defaultDisplayValue);
+    setDisplayedValue('');
 
     setOperand('');
     setOperation(undefined);
   };
 
   const handleNegate = () => {
-    if (displayedValue === defaultDisplayValue) {
+    if (!displayedValue || displayedValue === defaultDisplayValue) {
       return;
     }
 
@@ -40,9 +42,9 @@ export const Calculator = () => {
 
   const handleDigit = (value: number) => () =>
     setDisplayedValue(
-      displayedValue !== defaultDisplayValue
-        ? displayedValue + value
-        : value.toString(),
+      !displayedValue || displayedValue === defaultDisplayValue
+        ? value.toString()
+        : displayedValue + value,
     );
 
   const handleOperation = (value: Operation) => () => setOperation(value);
@@ -59,14 +61,14 @@ export const Calculator = () => {
           },
         }}
         readOnly
-        value={displayedValue}
+        value={displayedValue || defaultDisplayValue}
       />
       <Stack direction="row">
         <Box>
           <Stack direction="row">
             <Tooltip describeChild title="Clear (Esc); Clear All (Opt-Esc)">
               <Button aria-label="Clear" fullWidth onClick={handleClear}>
-                AC
+                {displayedValue ? 'C' : 'AC'}
               </Button>
             </Tooltip>
             <Tooltip
@@ -84,7 +86,7 @@ export const Calculator = () => {
             </Tooltip>
           </Stack>
           <Grid2 columns={3} container direction="row-reverse">
-            {range(9, -1).map((digit) =>
+            {digits.toReversed().map((digit) =>
               digit ? (
                 <Grid2 key={digit} size={1}>
                   <Button fullWidth onClick={handleDigit(digit)}>

@@ -91,7 +91,29 @@ describe(Calculator, () => {
       renderWithProviders(<Calculator />);
 
       expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
-        'AC',
+        /^ac$/i,
+      );
+    });
+
+    it('should render as clear when display value is set', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '0' }));
+
+      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
+        /^c$/i,
+      );
+    });
+
+    it('should render as clear all when display value is cleared', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '0' }));
+
+      await user.click(screen.getByRole('button', { name: /clear/i }));
+
+      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
+        /^ac$/i,
       );
     });
   });
