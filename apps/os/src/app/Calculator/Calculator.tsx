@@ -2,6 +2,8 @@ import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { range } from 'lodash';
 
+const defaultDisplayValue = '0';
+
 enum Operation {
   Add = '+',
   Divide = '/',
@@ -10,29 +12,38 @@ enum Operation {
 }
 
 export const Calculator = () => {
-  const [displayedValue, setDisplayedValue] = useState('');
+  const [displayedValue, setDisplayedValue] = useState(defaultDisplayValue);
 
   const [operand, setOperand] = useState('');
   const [operation, setOperation] = useState<Operation | undefined>();
 
   const handleClear = () => {
-    setDisplayedValue('');
+    setDisplayedValue(defaultDisplayValue);
 
     setOperand('');
     setOperation(undefined);
   };
 
-  const handleNegate = () =>
+  const handleNegate = () => {
+    if (displayedValue === defaultDisplayValue) {
+      return;
+    }
+
     setDisplayedValue(
       displayedValue.startsWith('-')
         ? displayedValue.substring(1)
         : `-${displayedValue}`,
     );
+  };
 
   const handlePercent = () => undefined;
 
   const handleDigit = (value: number) => () =>
-    setDisplayedValue(displayedValue + value);
+    setDisplayedValue(
+      displayedValue !== defaultDisplayValue
+        ? displayedValue + value
+        : value.toString(),
+    );
 
   const handleOperation = (value: Operation) => () => setOperation(value);
 
@@ -48,7 +59,7 @@ export const Calculator = () => {
           },
         }}
         readOnly
-        value={displayedValue || 0}
+        value={displayedValue}
       />
       <Stack direction="row">
         <Box>

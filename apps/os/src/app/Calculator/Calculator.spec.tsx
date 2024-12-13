@@ -47,7 +47,7 @@ describe(Calculator, () => {
     });
   });
 
-  describe('negate display value action', () => {
+  describe('negate action', () => {
     it('should render button', () => {
       renderWithProviders(<Calculator />);
 
@@ -66,6 +66,24 @@ describe(Calculator, () => {
           name: /negate the displayed value \(or press option-minus \[-]\)/i,
         }),
       ).toBeInTheDocument();
+    });
+
+    it('should negate the display value', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /1/i }));
+
+      await user.click(screen.getByRole('button', { name: /negate/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('-1');
+    });
+
+    it('should have no effect when display value is 0', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /negate/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
     });
   });
 
