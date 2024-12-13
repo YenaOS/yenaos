@@ -12,7 +12,7 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
-  it('should render 0 as default display value', () => {
+  it('should render 0 as default display value', async () => {
     renderWithProviders(<Calculator />);
 
     expect(screen.getByRole('textbox')).toHaveValue('0');
@@ -24,7 +24,7 @@ describe(Calculator, () => {
         digit,
       })),
     )('digit $digit action', ({ digit }) => {
-      it('should render button', () => {
+      it('should render button', async () => {
         renderWithProviders(<Calculator />);
 
         expect(
@@ -67,7 +67,7 @@ describe(Calculator, () => {
   });
 
   describe('decimal point action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -105,7 +105,7 @@ describe(Calculator, () => {
   });
 
   describe('clear action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -125,7 +125,7 @@ describe(Calculator, () => {
       ).toBeInTheDocument();
     });
 
-    it('should render as clear all by default', () => {
+    it('should render as clear all by default', async () => {
       renderWithProviders(<Calculator />);
 
       expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
@@ -157,7 +157,7 @@ describe(Calculator, () => {
   });
 
   describe('negate action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -197,7 +197,7 @@ describe(Calculator, () => {
   });
 
   describe('per cent action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -248,7 +248,7 @@ describe(Calculator, () => {
   });
 
   describe('divide action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -268,7 +268,7 @@ describe(Calculator, () => {
   });
 
   describe('multiply action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -290,7 +290,7 @@ describe(Calculator, () => {
   });
 
   describe('subtract action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
@@ -312,7 +312,7 @@ describe(Calculator, () => {
   });
 
   describe('add action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
@@ -330,7 +330,7 @@ describe(Calculator, () => {
   });
 
   describe('equal action', () => {
-    it('should render button', () => {
+    it('should render button', async () => {
       renderWithProviders(<Calculator />);
 
       expect(
