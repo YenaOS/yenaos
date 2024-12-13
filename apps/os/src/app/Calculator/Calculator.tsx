@@ -38,7 +38,10 @@ export const Calculator = () => {
     );
   };
 
-  const handlePercent = () => undefined;
+  const handlePercent = () =>
+    setDisplayedValue(
+      (Number(displayedValue.replace(',', '.')) / 100).toString(),
+    );
 
   const handleDigit = (value: number) => () =>
     setDisplayedValue(
@@ -46,6 +49,14 @@ export const Calculator = () => {
         ? value.toString()
         : displayedValue + value,
     );
+
+  const handleDecimalPoint = () => {
+    if (displayedValue.includes(',')) {
+      return;
+    }
+
+    setDisplayedValue(displayedValue || defaultDisplayValue + ',');
+  };
 
   const handleOperation = (value: Operation) => () => setOperation(value);
 
@@ -96,7 +107,13 @@ export const Calculator = () => {
               ) : (
                 [
                   <Grid2 key="decimal-point" size={1}>
-                    <Button fullWidth>,</Button>
+                    <Button
+                      aria-label="Decimal point"
+                      fullWidth
+                      onClick={handleDecimalPoint}
+                    >
+                      ,
+                    </Button>
                   </Grid2>,
                   <Grid2 key={digit} size={2}>
                     <Button fullWidth onClick={handleDigit(digit)}>

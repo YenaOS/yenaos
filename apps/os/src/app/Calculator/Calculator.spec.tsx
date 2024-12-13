@@ -12,7 +12,7 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
-  it("should render '0' as default display value", () => {
+  it('should render 0 as default display value', () => {
     renderWithProviders(<Calculator />);
 
     expect(screen.getByRole('textbox')).toHaveValue('0');
@@ -142,7 +142,7 @@ describe(Calculator, () => {
     it('should negate the display value', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
-      await user.click(screen.getByRole('button', { name: /1/i }));
+      await user.click(screen.getByRole('button', { name: '1' }));
 
       await user.click(screen.getByRole('button', { name: /negate/i }));
 
@@ -177,6 +177,35 @@ describe(Calculator, () => {
           name: /per cent \(or press %\)/i,
         }),
       ).toBeInTheDocument();
+    });
+
+    it('should divide the display value by 100', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /per cent/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.01');
+    });
+
+    it('should do nothing when display value is 0', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /per cent/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
+    });
+
+    it('should render 0 when display value is 0 with decimal point', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /decimal point/i }));
+      await user.click(screen.getByRole('button', { name: '0' }));
+
+      await user.click(screen.getByRole('button', { name: /per cent/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
     });
   });
 
