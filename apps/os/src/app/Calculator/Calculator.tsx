@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 const digits = range(0, 10);
 
+const decimalPoint = '.';
+
 const defaultDisplayValue = digits[0].toString();
 
 enum Operation {
@@ -42,9 +44,7 @@ export const Calculator = () => {
   };
 
   const handlePercent = () =>
-    setDisplayedValue(
-      (Number(displayedValue.replace(',', '.')) / 100).toString(),
-    );
+    setDisplayedValue((Number(displayedValue) / 100).toString());
 
   const handleDigit = (value: number) => () =>
     setDisplayedValue(
@@ -54,11 +54,11 @@ export const Calculator = () => {
     );
 
   const handleDecimalPoint = () => {
-    if (displayedValue.includes(',')) {
+    if (displayedValue.includes(decimalPoint)) {
       return;
     }
 
-    setDisplayedValue((displayedValue || defaultDisplayValue) + ',');
+    setDisplayedValue((displayedValue || defaultDisplayValue) + decimalPoint);
   };
 
   const handleOperation = (value: Operation) => () => {
@@ -75,8 +75,8 @@ export const Calculator = () => {
       return;
     }
 
-    const leftOperand = Number(operand.replace(',', '.'));
-    const rightOperand = Number(displayedValue.replace(',', '.'));
+    const leftOperand = Number(operand);
+    const rightOperand = Number(displayedValue);
 
     const performOperation = (a: number, b: number, op: Operation) => {
       switch (op) {
@@ -147,7 +147,7 @@ export const Calculator = () => {
                       fullWidth
                       onClick={handleDecimalPoint}
                     >
-                      ,
+                      {decimalPoint}
                     </Button>
                   </Grid2>,
                   <Grid2 key={digit} size={2}>

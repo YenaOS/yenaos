@@ -81,7 +81,7 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: /decimal point/i }));
 
-      expect(screen.getByRole('textbox')).toHaveValue('0,');
+      expect(screen.getByRole('textbox')).toHaveValue('0.');
     });
 
     it('should append decimal point', async () => {
@@ -91,7 +91,7 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: /decimal point/i }));
 
-      expect(screen.getByRole('textbox')).toHaveValue('1,');
+      expect(screen.getByRole('textbox')).toHaveValue('1.');
     });
 
     it('should do nothing when decimal point is already present', async () => {
@@ -101,7 +101,7 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: /decimal point/i }));
 
-      expect(screen.getByRole('textbox')).toHaveValue('0,');
+      expect(screen.getByRole('textbox')).toHaveValue('0.');
     });
   });
 
