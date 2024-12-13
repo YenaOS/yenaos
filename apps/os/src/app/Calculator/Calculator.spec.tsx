@@ -11,95 +11,187 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
-  it('should display 0 by default', () => {
+  it('should render 0 by default', () => {
     renderWithProviders(<Calculator />);
 
     expect(screen.getByRole('textbox')).toHaveValue('0');
   });
 
-  it('should display tooltip for Clear', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('clear action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /clear/i }));
+      expect(
+        screen.getByRole('button', { name: /clear/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', {
-        name: /clear \(esc\); clear all \(opt-esc\)/i,
-      }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /clear/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /clear \(esc\); clear all \(opt-esc\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
+
+    it('should render as clear all by default', () => {
+      renderWithProviders(<Calculator />);
+
+      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
+        'AC',
+      );
+    });
   });
 
-  it('should display tooltip for Negate', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('negate display value action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /negate/i }));
+      expect(
+        screen.getByRole('button', { name: /negate/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', {
-        name: /negate the displayed value \(or press option-minus \[-]\)/i,
-      }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /negate/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /negate the displayed value \(or press option-minus \[-]\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Per cent', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('per cent action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /per cent/i }));
+      expect(
+        screen.getByRole('button', { name: /per cent/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', { name: /per cent \(or press %\)/i }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /per cent/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /per cent \(or press %\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Divide', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('divide action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /divide/i }));
+      expect(
+        screen.getByRole('button', { name: /divide/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', { name: /divide \(or press \/\)/i }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /divide/i }));
+
+      expect(
+        await screen.findByRole('tooltip', { name: /divide \(or press \/\)/i }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Multiply', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('multiply action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /multiply/i }));
+      expect(
+        screen.getByRole('button', { name: /multiply/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', { name: /multiply \(or press \*\)/i }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /multiply/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /multiply \(or press \*\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Subtract', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('subtract action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /subtract/i }));
+      expect(
+        screen.getByRole('button', { name: /subtract/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', { name: /subtract \(or press -\)/i }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /subtract/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /subtract \(or press -\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Add', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('add action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /add/i }));
+      expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', { name: /add \(or press \+\)/i }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /add/i }));
+
+      expect(
+        await screen.findByRole('tooltip', { name: /add \(or press \+\)/i }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should display tooltip for Equal', async () => {
-    const { user } = renderWithProviders(<Calculator />);
+  describe('equal action', () => {
+    it('should render button', () => {
+      renderWithProviders(<Calculator />);
 
-    await user.hover(screen.getByRole('button', { name: /equal/i }));
+      expect(
+        screen.getByRole('button', { name: /equal/i }),
+      ).toBeInTheDocument();
+    });
 
-    expect(
-      await screen.findByRole('tooltip', {
-        name: /equal \(or press return\)/i,
-      }),
-    ).toBeInTheDocument();
+    it('should render tooltip', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.hover(screen.getByRole('button', { name: /equal/i }));
+
+      expect(
+        await screen.findByRole('tooltip', {
+          name: /equal \(or press return\)/i,
+        }),
+      ).toBeInTheDocument();
+    });
   });
 });
