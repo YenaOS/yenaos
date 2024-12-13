@@ -266,6 +266,20 @@ describe(Calculator, () => {
         await screen.findByRole('tooltip', { name: /divide \(or press \/\)/i }),
       ).toBeInTheDocument();
     });
+
+    it('should perform division', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /divide/i }));
+
+      await user.click(screen.getByRole('button', { name: '2' }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.5');
+    });
   });
 
   describe('multiply action', () => {
@@ -287,6 +301,20 @@ describe(Calculator, () => {
           name: /multiply \(or press \*\)/i,
         }),
       ).toBeInTheDocument();
+    });
+
+    it('should perform multiplication', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '2' }));
+
+      await user.click(screen.getByRole('button', { name: /multiply/i }));
+
+      await user.click(screen.getByRole('button', { name: '3' }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('6');
     });
   });
 
@@ -310,6 +338,20 @@ describe(Calculator, () => {
         }),
       ).toBeInTheDocument();
     });
+
+    it('should perform sutraction', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /subtract/i }));
+
+      await user.click(screen.getByRole('button', { name: '2' }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('-1');
+    });
   });
 
   describe('add action', () => {
@@ -327,6 +369,20 @@ describe(Calculator, () => {
       expect(
         await screen.findByRole('tooltip', { name: /add \(or press \+\)/i }),
       ).toBeInTheDocument();
+    });
+
+    it('should perform addition', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /add/i }));
+
+      await user.click(screen.getByRole('button', { name: '2' }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
     });
   });
 

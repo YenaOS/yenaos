@@ -61,9 +61,40 @@ export const Calculator = () => {
     setDisplayedValue((displayedValue || defaultDisplayValue) + ',');
   };
 
-  const handleOperation = (value: Operation) => () => setOperation(value);
+  const handleOperation = (value: Operation) => () => {
+    if (!operand) {
+      setOperand(displayedValue || defaultDisplayValue);
+      setDisplayedValue(defaultDisplayValue);
+    }
 
-  const handleEqual = () => undefined;
+    setOperation(value);
+  };
+
+  const handleEqual = () => {
+    if (!operand || !operation) {
+      return;
+    }
+
+    const leftOperand = Number(operand.replace(',', '.'));
+    const rightOperand = Number(displayedValue.replace(',', '.'));
+
+    const performOperation = (a: number, b: number, op: Operation) => {
+      switch (op) {
+        case Operation.Add:
+          return a + b;
+        case Operation.Subtract:
+          return a - b;
+        case Operation.Multiply:
+          return a * b;
+        case Operation.Divide:
+          return a / b;
+      }
+    };
+
+    const result = performOperation(leftOperand, rightOperand, operation);
+
+    setDisplayedValue(result.toString());
+  };
 
   return (
     <Box maxWidth={300}>
