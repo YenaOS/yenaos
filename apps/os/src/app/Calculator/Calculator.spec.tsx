@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { Calculator } from './Calculator';
 import type { ReactNode } from 'react';
+import { range } from 'lodash';
 
 const renderWithProviders = (ui: ReactNode) => ({
   ...render(ui),
@@ -11,10 +12,58 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
-  it('should render 0 by default', () => {
+  it("should render '0' as default display value", () => {
     renderWithProviders(<Calculator />);
 
     expect(screen.getByRole('textbox')).toHaveValue('0');
+  });
+
+  describe('digit actions', () => {
+    describe.each(
+      range(0, 10).map((digit) => ({
+        digit,
+      })),
+    )('digit $digit action', ({ digit }) => {
+      it('should render button', () => {
+        renderWithProviders(<Calculator />);
+
+        expect(
+          screen.getByRole('button', { name: digit.toString() }),
+        ).toBeInTheDocument();
+      });
+
+      it('should replace default display value when clicked one time', async () => {
+        const { user } = renderWithProviders(<Calculator />);
+
+        await user.click(
+          screen.getByRole('button', { name: digit.toString() }),
+        );
+
+        const expected = digit.toString();
+
+        expect(screen.getByRole('textbox')).toHaveValue(expected);
+      });
+
+      it(
+        digit === 0
+          ? 'should not change display value when clicked multiple times'
+          : 'should append digit to display value when clicked multiple times',
+        async () => {
+          const { user } = renderWithProviders(<Calculator />);
+
+          await user.click(
+            screen.getByRole('button', { name: digit.toString() }),
+          );
+          await user.click(
+            screen.getByRole('button', { name: digit.toString() }),
+          );
+
+          const expected = digit.toString().repeat(!digit ? 1 : 2);
+
+          expect(screen.getByRole('textbox')).toHaveValue(expected);
+        },
+      );
+    });
   });
 
   describe('clear action', () => {
