@@ -1,5 +1,6 @@
-import { Box, Button, Input, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
 import { useState } from 'react';
+import { range } from 'lodash';
 
 enum Operation {
   Add = '+',
@@ -30,7 +31,7 @@ export const Calculator = () => {
 
   const handlePercent = () => undefined;
 
-  const handleDigit = (value: string) => () =>
+  const handleDigit = (value: number) => () =>
     setDisplayedValue(displayedValue + value);
 
   const handleOperation = (value: Operation) => () => setOperation(value);
@@ -38,7 +39,7 @@ export const Calculator = () => {
   const handleEqual = () => undefined;
 
   return (
-    <Box>
+    <Box maxWidth={300}>
       <Input
         fullWidth
         inputProps={{
@@ -51,9 +52,9 @@ export const Calculator = () => {
       />
       <Stack direction="row">
         <Box>
-          <Box>
+          <Stack direction="row">
             <Tooltip describeChild title="Clear (Esc); Clear All (Opt-Esc)">
-              <Button aria-label="Clear" onClick={handleClear}>
+              <Button aria-label="Clear" fullWidth onClick={handleClear}>
                 AC
               </Button>
             </Tooltip>
@@ -61,29 +62,38 @@ export const Calculator = () => {
               describeChild
               title="Negate the displayed value (or press Option-Minus [-])"
             >
-              <Button aria-label="Negate" onClick={handleNegate}>
+              <Button aria-label="Negate" fullWidth onClick={handleNegate}>
                 +/-
               </Button>
             </Tooltip>
             <Tooltip describeChild title="Per cent (or press %)">
-              <Button aria-label="Per cent" onClick={handlePercent}>
+              <Button aria-label="Per cent" fullWidth onClick={handlePercent}>
                 %
               </Button>
             </Tooltip>
-          </Box>
-          <Box>
-            <Button onClick={handleDigit('7')}>7</Button>
-            <Button onClick={handleDigit('8')}>8</Button>
-            <Button onClick={handleDigit('9')}>9</Button>
-            <Button onClick={handleDigit('4')}>4</Button>
-            <Button onClick={handleDigit('5')}>5</Button>
-            <Button onClick={handleDigit('6')}>6</Button>
-            <Button onClick={handleDigit('1')}>1</Button>
-            <Button onClick={handleDigit('2')}>2</Button>
-            <Button onClick={handleDigit('3')}>3</Button>
-            <Button onClick={handleDigit('0')}>0</Button>
-            <Button>,</Button>
-          </Box>
+          </Stack>
+          <Grid2 columns={3} container direction="row-reverse">
+            {range(9, -1).map((digit) =>
+              digit ? (
+                <Grid2 key={digit} size={1}>
+                  <Button fullWidth onClick={handleDigit(digit)}>
+                    {digit}
+                  </Button>
+                </Grid2>
+              ) : (
+                [
+                  <Grid2 key="decimal-point" size={1}>
+                    <Button fullWidth>,</Button>
+                  </Grid2>,
+                  <Grid2 key={digit} size={2}>
+                    <Button fullWidth onClick={handleDigit(digit)}>
+                      {digit}
+                    </Button>
+                  </Grid2>,
+                ]
+              ),
+            )}
+          </Grid2>
         </Box>
         <Stack direction="column">
           <Tooltip describeChild title="Divide (or press /)">

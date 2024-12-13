@@ -11,6 +11,12 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
+  it('should display 0 by default', () => {
+    renderWithProviders(<Calculator />);
+
+    expect(screen.getByRole('textbox')).toHaveValue('0');
+  });
+
   it('should display tooltip for Clear', async () => {
     const { user } = renderWithProviders(<Calculator />);
 
