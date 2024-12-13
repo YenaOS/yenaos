@@ -280,6 +280,16 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('0.5');
     });
+
+    it('should render not a number message when dividing by 0', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: /divide/i }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('Not a number');
+    });
   });
 
   describe('multiply action', () => {

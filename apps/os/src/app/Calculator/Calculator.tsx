@@ -106,7 +106,11 @@ export const Calculator = () => {
           },
         }}
         readOnly
-        value={displayedValue || defaultDisplayValue}
+        value={
+          displayedValue === NaN.toString()
+            ? t('notANumber')
+            : displayedValue || defaultDisplayValue
+        }
       />
       <Stack direction="row">
         <Box>
