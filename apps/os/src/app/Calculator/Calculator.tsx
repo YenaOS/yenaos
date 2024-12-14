@@ -14,14 +14,17 @@ export const Calculator = () => {
 
   const {
     calculate,
-    clear,
-    displayedValue,
+    clearInput,
+    input,
     insertDecimalPoint,
     insertDigit,
     negate,
     perCent,
+    reset,
     setOperation,
   } = useCalculator();
+
+  const handleClear = () => (input ? clearInput() : reset());
 
   return (
     <Box maxWidth={300}>
@@ -34,17 +37,17 @@ export const Calculator = () => {
         }}
         readOnly
         value={
-          displayedValue === NaN.toString()
+          input === NaN.toString()
             ? t('notANumber')
-            : displayedValue || defaultDisplayValue
+            : input || defaultDisplayValue
         }
       />
       <Stack direction="row">
         <Box>
           <Stack direction="row">
             <Tooltip describeChild title={t('clearTooltip')}>
-              <Button aria-label={t('clear')} fullWidth onClick={clear}>
-                {displayedValue ? 'C' : 'AC'}
+              <Button aria-label={t('clear')} fullWidth onClick={handleClear}>
+                {input ? 'C' : 'AC'}
               </Button>
             </Tooltip>
             <Tooltip describeChild title={t('negateTooltip')}>

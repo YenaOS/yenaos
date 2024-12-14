@@ -144,6 +144,16 @@ describe(Calculator, () => {
       );
     });
 
+    it('should clear display value', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /clear/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
+    });
+
     it('should render as clear all when display value is cleared', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
@@ -154,6 +164,24 @@ describe(Calculator, () => {
       expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
         /^ac$/i,
       );
+    });
+
+    it('should only clear input when first operand is set', async () => {
+      const { user } = renderWithProviders(<Calculator />);
+
+      await user.click(screen.getByRole('button', { name: '1' }));
+
+      await user.click(screen.getByRole('button', { name: /add/i }));
+
+      await user.click(screen.getByRole('button', { name: '2' }));
+
+      await user.click(screen.getByRole('button', { name: /clear/i }));
+
+      await user.click(screen.getByRole('button', { name: '3' }));
+
+      await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('4');
     });
   });
 

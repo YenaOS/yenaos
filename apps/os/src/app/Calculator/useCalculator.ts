@@ -16,63 +16,66 @@ export enum Operation {
 
 interface UseCalculatorResult {
   calculate(): void;
-  clear(): void;
-  displayedValue: string;
+  clearInput(): void;
+  input: string;
   insertDecimalPoint(): void;
   insertDigit(value: number): void;
   negate(): void;
   operation: Operation | undefined;
   perCent(): void;
+  reset(): void;
   setOperation(value: Operation): void;
 }
 
 export const useCalculator = (): UseCalculatorResult => {
-  const [displayedValue, setDisplayedValue] = useState('');
+  const [input, setInput] = useState('');
 
   const [operand, setOperand] = useState('');
   const [op, setOp] = useState<Operation | undefined>();
 
-  const insertDigit = (value: number) =>
-    setDisplayedValue(
-      !displayedValue || displayedValue === defaultDisplayValue
-        ? value.toString()
-        : displayedValue + value,
-    );
-
-  const insertDecimalPoint = () => {
-    if (displayedValue.includes(decimalPoint)) {
+  const insertDigit = (value: number) => {
+    if (!digits.includes(value)) {
       return;
     }
 
-    setDisplayedValue((displayedValue || defaultDisplayValue) + decimalPoint);
+    setInput(
+      !input || input === defaultDisplayValue
+        ? value.toString()
+        : input + value,
+    );
+  };
+
+  const insertDecimalPoint = () => {
+    if (input.includes(decimalPoint)) {
+      return;
+    }
+
+    setInput((input || defaultDisplayValue) + decimalPoint);
   };
 
   const setOperation = (value: Operation) => {
     if (!operand) {
-      setOperand(displayedValue || defaultDisplayValue);
-      setDisplayedValue(defaultDisplayValue);
+      setOperand(input || defaultDisplayValue);
+      setInput(defaultDisplayValue);
     }
 
     setOp(value);
   };
 
   const negate = () => {
-    if (!displayedValue || displayedValue === defaultDisplayValue) {
+    if (!input || input === defaultDisplayValue) {
       return;
     }
 
-    setDisplayedValue(
-      displayedValue.startsWith('-')
-        ? displayedValue.substring(1)
-        : `-${displayedValue}`,
-    );
+    setInput(input.startsWith('-') ? input.substring(1) : `-${input}`);
   };
 
-  const perCent = () =>
-    setDisplayedValue((Number(displayedValue) / 100).toString());
+  const perCent = () => setInput((Number(input) / 100).toString());
 
-  const clear = () => {
-    setDisplayedValue('');
+  const clearInput = () => setInput('');
+
+  const reset = () => {
+    setInput('');
 
     setOperand('');
     setOp(undefined);
@@ -84,7 +87,7 @@ export const useCalculator = (): UseCalculatorResult => {
     }
 
     const leftOperand = Number(operand);
-    const rightOperand = Number(displayedValue);
+    const rightOperand = Number(input);
 
     const performOperation = (a: number, b: number, op: Operation) => {
       switch (op) {
@@ -101,18 +104,19 @@ export const useCalculator = (): UseCalculatorResult => {
 
     const result = performOperation(leftOperand, rightOperand, op);
 
-    setDisplayedValue(result.toString());
+    setInput(result.toString());
   };
 
   return {
     calculate,
-    clear,
-    displayedValue,
+    clearInput,
+    input,
     insertDecimalPoint,
     insertDigit,
     negate,
     operation: op,
     perCent,
+    reset,
     setOperation,
   };
 };
