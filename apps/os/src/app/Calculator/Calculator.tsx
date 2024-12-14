@@ -1,100 +1,27 @@
 import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
-import { range } from 'lodash';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const digits = range(0, 10);
-
-const decimalPoint = '.';
-
-const defaultDisplayValue = digits[0].toString();
-
-enum Operation {
-  Add = '+',
-  Divide = '/',
-  Multiply = '*',
-  Subtract = '-',
-}
+import {
+  decimalPoint,
+  defaultDisplayValue,
+  digits,
+  Operation,
+  useCalculator,
+} from './useCalculator';
 
 export const Calculator = () => {
   const { t } = useTranslation('calculator');
 
-  const [displayedValue, setDisplayedValue] = useState('');
-
-  const [operand, setOperand] = useState('');
-  const [operation, setOperation] = useState<Operation | undefined>();
-
-  const handleClear = () => {
-    setDisplayedValue('');
-
-    setOperand('');
-    setOperation(undefined);
-  };
-
-  const handleNegate = () => {
-    if (!displayedValue || displayedValue === defaultDisplayValue) {
-      return;
-    }
-
-    setDisplayedValue(
-      displayedValue.startsWith('-')
-        ? displayedValue.substring(1)
-        : `-${displayedValue}`,
-    );
-  };
-
-  const handlePercent = () =>
-    setDisplayedValue((Number(displayedValue) / 100).toString());
-
-  const handleDigit = (value: number) => () =>
-    setDisplayedValue(
-      !displayedValue || displayedValue === defaultDisplayValue
-        ? value.toString()
-        : displayedValue + value,
-    );
-
-  const handleDecimalPoint = () => {
-    if (displayedValue.includes(decimalPoint)) {
-      return;
-    }
-
-    setDisplayedValue((displayedValue || defaultDisplayValue) + decimalPoint);
-  };
-
-  const handleOperation = (value: Operation) => () => {
-    if (!operand) {
-      setOperand(displayedValue || defaultDisplayValue);
-      setDisplayedValue(defaultDisplayValue);
-    }
-
-    setOperation(value);
-  };
-
-  const handleEqual = () => {
-    if (!operand || !operation) {
-      return;
-    }
-
-    const leftOperand = Number(operand);
-    const rightOperand = Number(displayedValue);
-
-    const performOperation = (a: number, b: number, op: Operation) => {
-      switch (op) {
-        case Operation.Add:
-          return a + b;
-        case Operation.Subtract:
-          return a - b;
-        case Operation.Multiply:
-          return a * b;
-        case Operation.Divide:
-          return a / b;
-      }
-    };
-
-    const result = performOperation(leftOperand, rightOperand, operation);
-
-    setDisplayedValue(result.toString());
-  };
+  const {
+    calculate,
+    clear,
+    displayedValue,
+    insertDecimalPoint,
+    insertDigit,
+    negate,
+    perCent,
+    setOperation,
+  } = useCalculator();
 
   return (
     <Box maxWidth={300}>
@@ -116,21 +43,17 @@ export const Calculator = () => {
         <Box>
           <Stack direction="row">
             <Tooltip describeChild title={t('clearTooltip')}>
-              <Button aria-label={t('clear')} fullWidth onClick={handleClear}>
+              <Button aria-label={t('clear')} fullWidth onClick={clear}>
                 {displayedValue ? 'C' : 'AC'}
               </Button>
             </Tooltip>
             <Tooltip describeChild title={t('negateTooltip')}>
-              <Button aria-label={t('negate')} fullWidth onClick={handleNegate}>
+              <Button aria-label={t('negate')} fullWidth onClick={negate}>
                 +/-
               </Button>
             </Tooltip>
             <Tooltip describeChild title={t('perCentTooltip')}>
-              <Button
-                aria-label={t('perCent')}
-                fullWidth
-                onClick={handlePercent}
-              >
+              <Button aria-label={t('perCent')} fullWidth onClick={perCent}>
                 %
               </Button>
             </Tooltip>
@@ -139,7 +62,7 @@ export const Calculator = () => {
             {digits.toReversed().map((digit) =>
               digit ? (
                 <Grid2 key={digit} size={1}>
-                  <Button fullWidth onClick={handleDigit(digit)}>
+                  <Button fullWidth onClick={() => insertDigit(digit)}>
                     {digit}
                   </Button>
                 </Grid2>
@@ -149,13 +72,13 @@ export const Calculator = () => {
                     <Button
                       aria-label={t('decimalPoint')}
                       fullWidth
-                      onClick={handleDecimalPoint}
+                      onClick={insertDecimalPoint}
                     >
                       {decimalPoint}
                     </Button>
                   </Grid2>,
                   <Grid2 key={digit} size={2}>
-                    <Button fullWidth onClick={handleDigit(digit)}>
+                    <Button fullWidth onClick={() => insertDigit(digit)}>
                       {digit}
                     </Button>
                   </Grid2>,
@@ -168,7 +91,7 @@ export const Calculator = () => {
           <Tooltip describeChild title={t('divideTooltip')}>
             <Button
               aria-label={t('divide')}
-              onClick={handleOperation(Operation.Divide)}
+              onClick={() => setOperation(Operation.Divide)}
             >
               /
             </Button>
@@ -176,7 +99,7 @@ export const Calculator = () => {
           <Tooltip describeChild title={t('multiplyTooltip')}>
             <Button
               aria-label={t('multiply')}
-              onClick={handleOperation(Operation.Multiply)}
+              onClick={() => setOperation(Operation.Multiply)}
             >
               x
             </Button>
@@ -184,7 +107,7 @@ export const Calculator = () => {
           <Tooltip describeChild title={t('subtractTooltip')}>
             <Button
               aria-label={t('subtract')}
-              onClick={handleOperation(Operation.Subtract)}
+              onClick={() => setOperation(Operation.Subtract)}
             >
               -
             </Button>
@@ -192,13 +115,13 @@ export const Calculator = () => {
           <Tooltip describeChild title={t('addTooltip')}>
             <Button
               aria-label={t('add')}
-              onClick={handleOperation(Operation.Add)}
+              onClick={() => setOperation(Operation.Add)}
             >
               +
             </Button>
           </Tooltip>
           <Tooltip describeChild title={t('equalTooltip')}>
-            <Button aria-label={t('equal')} onClick={handleEqual}>
+            <Button aria-label={t('equal')} onClick={calculate}>
               =
             </Button>
           </Tooltip>
