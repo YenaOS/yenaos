@@ -47,12 +47,12 @@ export const Calculator = () => {
             </Tooltip>
             <Tooltip describeChild title={t('negateTooltip')}>
               <Button aria-label={t('negate')} fullWidth onClick={negate}>
-                +/-
+                &#177;
               </Button>
             </Tooltip>
             <Tooltip describeChild title={t('perCentTooltip')}>
               <Button aria-label={t('perCent')} fullWidth onClick={perCent}>
-                %
+                &#37;
               </Button>
             </Tooltip>
           </Stack>
@@ -91,7 +91,7 @@ export const Calculator = () => {
               aria-label={t('divide')}
               onClick={() => setOperation(Operation.Divide)}
             >
-              /
+              &#247;
             </Button>
           </Tooltip>
           <Tooltip describeChild title={t('multiplyTooltip')}>
@@ -99,7 +99,7 @@ export const Calculator = () => {
               aria-label={t('multiply')}
               onClick={() => setOperation(Operation.Multiply)}
             >
-              x
+              &#215;
             </Button>
           </Tooltip>
           <Tooltip describeChild title={t('subtractTooltip')}>
@@ -107,7 +107,7 @@ export const Calculator = () => {
               aria-label={t('subtract')}
               onClick={() => setOperation(Operation.Subtract)}
             >
-              -
+              &#8722;
             </Button>
           </Tooltip>
           <Tooltip describeChild title={t('addTooltip')}>
@@ -115,12 +115,12 @@ export const Calculator = () => {
               aria-label={t('add')}
               onClick={() => setOperation(Operation.Add)}
             >
-              +
+              &#43;
             </Button>
           </Tooltip>
           <Tooltip describeChild title={t('equalTooltip')}>
             <Button aria-label={t('equal')} onClick={calculate}>
-              =
+              &#61;
             </Button>
           </Tooltip>
         </Stack>
