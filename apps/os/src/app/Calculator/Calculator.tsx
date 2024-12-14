@@ -1,13 +1,7 @@
 import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import {
-  decimalPoint,
-  defaultDisplayValue,
-  digits,
-  Operation,
-  useCalculator,
-} from './useCalculator';
+import { Operation, useCalculator } from './useCalculator';
 
 export const Calculator = () => {
   const { t } = useTranslation('calculator');
@@ -15,8 +9,11 @@ export const Calculator = () => {
   const {
     calculate,
     clearInput,
+    decimalSeparator,
+    digits,
     input,
-    insertDecimalPoint,
+    inputFallback,
+    insertDecimalSeparator,
     insertDigit,
     negate,
     perCent,
@@ -37,9 +34,7 @@ export const Calculator = () => {
         }}
         readOnly
         value={
-          input === NaN.toString()
-            ? t('notANumber')
-            : input || defaultDisplayValue
+          input === NaN.toString() ? t('notANumber') : input || inputFallback
         }
       />
       <Stack direction="row">
@@ -75,9 +70,9 @@ export const Calculator = () => {
                     <Button
                       aria-label={t('decimalPoint')}
                       fullWidth
-                      onClick={insertDecimalPoint}
+                      onClick={insertDecimalSeparator}
                     >
-                      {decimalPoint}
+                      {decimalSeparator}
                     </Button>
                   </Grid2>,
                   <Grid2 key={digit} size={2}>

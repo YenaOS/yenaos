@@ -1,11 +1,11 @@
 import { range } from 'lodash';
 import { useState } from 'react';
 
-export const digits = range(0, 10);
+const digits = range(0, 10);
 
-export const decimalPoint = '.';
+const decimalSeparator = '.';
 
-export const defaultDisplayValue = digits[0].toString();
+const inputFallback = '0';
 
 export enum Operation {
   Add = '+',
@@ -14,16 +14,22 @@ export enum Operation {
   Subtract = '-',
 }
 
+const isInputEmpty = (value: string) => !value || value === '0';
+
 interface UseCalculatorResult {
   calculate(): void;
   clearInput(): void;
+  decimalSeparator: string;
+  digits: readonly number[];
   input: string;
-  insertDecimalPoint(): void;
+  inputFallback: string;
+  insertDecimalSeparator(): void;
   insertDigit(value: number): void;
   negate(): void;
   operation: Operation | undefined;
   perCent(): void;
   reset(): void;
+  result: number | undefined;
   setOperation(value: Operation): void;
 }
 
@@ -33,37 +39,35 @@ export const useCalculator = (): UseCalculatorResult => {
   const [operand, setOperand] = useState('');
   const [op, setOp] = useState<Operation | undefined>();
 
+  const [result, setResult] = useState<number | undefined>();
+
   const insertDigit = (value: number) => {
     if (!digits.includes(value)) {
       return;
     }
 
-    setInput(
-      !input || input === defaultDisplayValue
-        ? value.toString()
-        : input + value,
-    );
+    setInput(isInputEmpty(input) ? value.toString() : input + value);
   };
 
-  const insertDecimalPoint = () => {
-    if (input.includes(decimalPoint)) {
+  const insertDecimalSeparator = () => {
+    if (input.includes(decimalSeparator)) {
       return;
     }
 
-    setInput((input || defaultDisplayValue) + decimalPoint);
+    setInput((input || inputFallback) + decimalSeparator);
   };
 
   const setOperation = (value: Operation) => {
     if (!operand) {
-      setOperand(input || defaultDisplayValue);
-      setInput(defaultDisplayValue);
+      setOperand(input || inputFallback);
+      setInput(inputFallback);
     }
 
     setOp(value);
   };
 
   const negate = () => {
-    if (!input || input === defaultDisplayValue) {
+    if (isInputEmpty(input)) {
       return;
     }
 
@@ -79,6 +83,7 @@ export const useCalculator = (): UseCalculatorResult => {
 
     setOperand('');
     setOp(undefined);
+    setResult(undefined);
   };
 
   const calculate = () => {
@@ -104,19 +109,25 @@ export const useCalculator = (): UseCalculatorResult => {
 
     const result = performOperation(leftOperand, rightOperand, op);
 
+    setResult(result);
+
     setInput(result.toString());
   };
 
   return {
     calculate,
     clearInput,
+    decimalSeparator,
+    digits,
     input,
-    insertDecimalPoint,
+    inputFallback,
+    insertDecimalSeparator,
     insertDigit,
     negate,
     operation: op,
     perCent,
     reset,
+    result,
     setOperation,
   };
 };
