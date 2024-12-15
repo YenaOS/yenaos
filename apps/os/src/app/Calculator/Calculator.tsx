@@ -2,6 +2,7 @@ import { Box, Button, Input, styled, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Operation, useCalculator } from './useCalculator';
+import { isNaN } from 'lodash';
 
 export const Calculator = () => {
   const { t } = useTranslation('calculator');
@@ -18,6 +19,7 @@ export const Calculator = () => {
     negate,
     perCent,
     reset,
+    result,
     setOperation,
   } = useCalculator();
 
@@ -54,9 +56,7 @@ export const Calculator = () => {
             paddingRight: 1,
             fontSize: 40,
           }}
-          value={
-            input === NaN.toString() ? t('notANumber') : input || inputFallback
-          }
+          value={isNaN(result) ? t('notANumber') : input || inputFallback}
         />
       </Box>
       <Box gridArea="clear">
