@@ -1,4 +1,4 @@
-import { Box, Button, Grid2, Input, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Input, styled, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { Operation, useCalculator } from './useCalculator';
@@ -24,107 +24,168 @@ export const Calculator = () => {
   const handleClear = () => (input ? clearInput() : reset());
 
   return (
-    <Box maxWidth={300}>
-      <Input
-        fullWidth
-        inputProps={{
-          style: {
-            textAlign: 'right',
-          },
-        }}
-        readOnly
-        value={
-          input === NaN.toString() ? t('notANumber') : input || inputFallback
-        }
-      />
-      <Stack direction="row">
-        <Box>
-          <Stack direction="row">
-            <Tooltip describeChild title={t('clearTooltip')}>
-              <Button aria-label={t('clear')} fullWidth onClick={handleClear}>
-                {input ? 'C' : 'AC'}
-              </Button>
-            </Tooltip>
-            <Tooltip describeChild title={t('negateTooltip')}>
-              <Button aria-label={t('negate')} fullWidth onClick={negate}>
-                &#177;
-              </Button>
-            </Tooltip>
-            <Tooltip describeChild title={t('perCentTooltip')}>
-              <Button aria-label={t('perCent')} fullWidth onClick={perCent}>
-                &#37;
-              </Button>
-            </Tooltip>
-          </Stack>
-          <Grid2 columns={3} container direction="row-reverse">
-            {digits.toReversed().map((digit) =>
-              digit ? (
-                <Grid2 key={digit} size={1}>
-                  <Button fullWidth onClick={() => insertDigit(digit)}>
-                    {digit}
-                  </Button>
-                </Grid2>
-              ) : (
-                [
-                  <Grid2 key="decimal-point" size={1}>
-                    <Button
-                      aria-label={t('decimalPoint')}
-                      fullWidth
-                      onClick={insertDecimalSeparator}
-                    >
-                      {decimalSeparator}
-                    </Button>
-                  </Grid2>,
-                  <Grid2 key={digit} size={2}>
-                    <Button fullWidth onClick={() => insertDigit(digit)}>
-                      {digit}
-                    </Button>
-                  </Grid2>,
-                ]
-              ),
-            )}
-          </Grid2>
+    <Box
+      display="grid"
+      gridTemplateAreas="
+        'input input input input'
+        'clear negate perCent divide'
+        'digit7 digit8 digit9 multiply'
+        'digit4 digit5 digit6 subtract'
+        'digit1 digit2 digit3 add'
+        'digit0 digit0 decimalPoint equal'
+      "
+      sx={{
+        backgroundColor: '#222222',
+      }}
+      width={230}
+    >
+      <Box gridArea="input">
+        <Input
+          disableUnderline
+          fullWidth
+          inputProps={{
+            style: {
+              color: '#fff',
+              textAlign: 'right',
+            },
+          }}
+          readOnly
+          sx={{
+            paddingRight: 1,
+            fontSize: 40,
+          }}
+          value={
+            input === NaN.toString() ? t('notANumber') : input || inputFallback
+          }
+        />
+      </Box>
+      <Box gridArea="clear">
+        <Tooltip describeChild title={t('clearTooltip')}>
+          <SecondaryActionButton
+            aria-label={t('clear')}
+            fullWidth
+            onClick={handleClear}
+          >
+            {input ? 'C' : 'AC'}
+          </SecondaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="negate">
+        <Tooltip describeChild title={t('negateTooltip')}>
+          <SecondaryActionButton
+            aria-label={t('negate')}
+            fullWidth
+            onClick={negate}
+          >
+            &#177;
+          </SecondaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="perCent">
+        <Tooltip describeChild title={t('perCentTooltip')}>
+          <SecondaryActionButton
+            aria-label={t('perCent')}
+            fullWidth
+            onClick={perCent}
+          >
+            &#37;
+          </SecondaryActionButton>
+        </Tooltip>
+      </Box>
+      {digits.map((digit) => (
+        <Box gridArea={`digit${digit}`} key={digit}>
+          <ActionButton fullWidth onClick={() => insertDigit(digit)}>
+            {digit}
+          </ActionButton>
         </Box>
-        <Stack direction="column">
-          <Tooltip describeChild title={t('divideTooltip')}>
-            <Button
-              aria-label={t('divide')}
-              onClick={() => setOperation(Operation.Divide)}
-            >
-              &#247;
-            </Button>
-          </Tooltip>
-          <Tooltip describeChild title={t('multiplyTooltip')}>
-            <Button
-              aria-label={t('multiply')}
-              onClick={() => setOperation(Operation.Multiply)}
-            >
-              &#215;
-            </Button>
-          </Tooltip>
-          <Tooltip describeChild title={t('subtractTooltip')}>
-            <Button
-              aria-label={t('subtract')}
-              onClick={() => setOperation(Operation.Subtract)}
-            >
-              &#8722;
-            </Button>
-          </Tooltip>
-          <Tooltip describeChild title={t('addTooltip')}>
-            <Button
-              aria-label={t('add')}
-              onClick={() => setOperation(Operation.Add)}
-            >
-              &#43;
-            </Button>
-          </Tooltip>
-          <Tooltip describeChild title={t('equalTooltip')}>
-            <Button aria-label={t('equal')} onClick={calculate}>
-              &#61;
-            </Button>
-          </Tooltip>
-        </Stack>
-      </Stack>
+      ))}
+      <Box gridArea="decimalPoint" key="decimal-point">
+        <ActionButton
+          aria-label={t('decimalPoint')}
+          fullWidth
+          onClick={insertDecimalSeparator}
+        >
+          {decimalSeparator}
+        </ActionButton>
+      </Box>
+      <Box gridArea="divide">
+        <Tooltip describeChild title={t('divideTooltip')}>
+          <PrimaryActionButton
+            aria-label={t('divide')}
+            fullWidth
+            onClick={() => setOperation(Operation.Divide)}
+          >
+            &#247;
+          </PrimaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="multiply">
+        <Tooltip describeChild title={t('multiplyTooltip')}>
+          <PrimaryActionButton
+            aria-label={t('multiply')}
+            fullWidth
+            onClick={() => setOperation(Operation.Multiply)}
+          >
+            &#215;
+          </PrimaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="subtract">
+        <Tooltip describeChild title={t('subtractTooltip')}>
+          <PrimaryActionButton
+            aria-label={t('subtract')}
+            fullWidth
+            onClick={() => setOperation(Operation.Subtract)}
+          >
+            &#8722;
+          </PrimaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="add">
+        <Tooltip describeChild title={t('addTooltip')}>
+          <PrimaryActionButton
+            aria-label={t('add')}
+            fullWidth
+            onClick={() => setOperation(Operation.Add)}
+          >
+            &#43;
+          </PrimaryActionButton>
+        </Tooltip>
+      </Box>
+      <Box gridArea="equal">
+        <Tooltip describeChild title={t('equalTooltip')}>
+          <PrimaryActionButton
+            aria-label={t('equal')}
+            fullWidth
+            onClick={calculate}
+          >
+            &#61;
+          </PrimaryActionButton>
+        </Tooltip>
+      </Box>
     </Box>
   );
 };
+
+const AppButton = styled(Button)({
+  borderRadius: 0,
+  border: '1px black',
+  borderTopStyle: 'solid',
+  color: '#fff',
+  minWidth: 0,
+  minHeight: 48,
+});
+
+const ActionButton = styled(AppButton)({
+  backgroundColor: '#595959',
+  borderRightStyle: 'solid',
+});
+
+const PrimaryActionButton = styled(AppButton)({
+  backgroundColor: '#ff9f0b',
+});
+
+const SecondaryActionButton = styled(AppButton)({
+  backgroundColor: '#383838',
+  borderRightStyle: 'solid',
+});
