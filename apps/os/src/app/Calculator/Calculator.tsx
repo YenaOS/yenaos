@@ -173,6 +173,7 @@ const AppButton = styled(Button)({
   border: '1px black',
   borderTopStyle: 'solid',
   color: '#fff',
+  fontSize: 18,
   minWidth: 0,
   minHeight: 48,
 });
