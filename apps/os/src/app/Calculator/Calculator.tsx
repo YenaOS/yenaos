@@ -36,6 +36,7 @@ export const Calculator = () => {
         'digit1 digit2 digit3 add'
         'digit0 digit0 decimalPoint equal'
       "
+      gridTemplateColumns="repeat(4, 25%)"
       sx={{
         backgroundColor: '#222222',
       }}
