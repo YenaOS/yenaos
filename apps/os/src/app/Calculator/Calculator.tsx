@@ -1,8 +1,8 @@
 import { Box, Button, Input, styled, Tooltip } from '@mui/material';
+import { isNaN } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { Operation, useCalculator } from './useCalculator';
-import { isNaN } from 'lodash';
 
 export const Calculator = () => {
   const { t } = useTranslation('calculator');
