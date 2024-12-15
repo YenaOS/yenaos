@@ -18,6 +18,10 @@
       }
     }
   },
+  "namedInputs": {
+    "default": ["sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
   "plugins": [
     {
       "options": {
