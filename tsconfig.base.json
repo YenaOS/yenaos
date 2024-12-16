@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": ["ES2023", "dom"],
+    "lib": ["es2020", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {},
