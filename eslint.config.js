@@ -8,7 +8,6 @@ export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
-  ...nx.configs['flat/react'],
   prettierConfig,
   testingLibraryPlugin.configs['flat/react'],
   functionalPlugin.configs.off,
