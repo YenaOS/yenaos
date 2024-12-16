@@ -19,17 +19,17 @@ const isInputEmpty = (value: string) => !value || value === '0';
 interface UseCalculatorResult {
   calculate(): void;
   clearInput(): void;
-  decimalSeparator: string;
-  digits: readonly number[];
-  input: string;
-  inputFallback: string;
+  readonly decimalSeparator: string;
+  readonly digits: readonly number[];
+  readonly input: string;
+  readonly inputFallback: string;
   insertDecimalSeparator(): void;
   insertDigit(value: number): void;
   negate(): void;
-  operation: Operation | undefined;
+  readonly operation: Operation | undefined;
   perCent(): void;
   reset(): void;
-  result: number | undefined;
+  readonly result: number | undefined;
   setOperation(value: Operation): void;
 }
 

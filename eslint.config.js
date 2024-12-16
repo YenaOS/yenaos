@@ -1,5 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const prettierConfig = require('eslint-config-prettier');
+const functionalPlugin = require('eslint-plugin-functional').default;
 const importPlugin = require('eslint-plugin-import');
 const reactPlugin = require('eslint-plugin-react');
 
@@ -35,9 +36,11 @@ module.exports = [
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     // Override or add rules here
     plugins: {
+      functional: functionalPlugin,
       import: importPlugin,
     },
     rules: {
+      'functional/prefer-readonly-type': 'error',
       'import/first': 'error',
       'import/namespace': 'error',
       'import/newline-after-import': 'error',
