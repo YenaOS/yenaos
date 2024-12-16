@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { range } from 'lodash';
 import type { ReactNode } from 'react';
 
-import '../../i18n';
+import { setupInternationalization } from '../../i18n';
+
 import { Calculator } from './Calculator';
 
 const renderWithProviders = (ui: ReactNode) => ({
@@ -13,6 +14,10 @@ const renderWithProviders = (ui: ReactNode) => ({
 });
 
 describe(Calculator, () => {
+  beforeAll(() => {
+    setupInternationalization();
+  });
+
   it('should render 0 as default display value', async () => {
     renderWithProviders(<Calculator />);
 

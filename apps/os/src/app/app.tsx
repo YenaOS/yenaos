@@ -1,3 +1,3 @@
-import { Calculator } from './Calculator/Calculator';
+import { Calculator } from './Calculator';
 
 export const App = () => <Calculator />;

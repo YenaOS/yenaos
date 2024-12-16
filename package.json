@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@yenaos/root",
+  "type": "module",
   "description": "",
   "license": "MIT",
   "version": "0.0.0",

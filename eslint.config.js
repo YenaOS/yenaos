@@ -1,16 +1,14 @@
-const nx = require('@nx/eslint-plugin');
-const prettierConfig = require('eslint-config-prettier');
-const functionalPlugin = require('eslint-plugin-functional').default;
-const importPlugin = require('eslint-plugin-import');
-const reactPlugin = require('eslint-plugin-react');
-const testingLibraryPlugin = require('eslint-plugin-testing-library');
+import nx from '@nx/eslint-plugin';
+import prettierConfig from 'eslint-config-prettier';
+import functionalPlugin from 'eslint-plugin-functional';
+import importPlugin from 'eslint-plugin-import';
+import testingLibraryPlugin from 'eslint-plugin-testing-library';
 
-module.exports = [
+export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
-  reactPlugin.configs.flat.all,
-  reactPlugin.configs.flat['jsx-runtime'],
+  ...nx.configs['flat/react'],
   prettierConfig,
   testingLibraryPlugin.configs['flat/react'],
   functionalPlugin.configs.off,
@@ -56,6 +54,13 @@ module.exports = [
             caseInsensitive: true,
             order: 'asc',
           },
+          groups: [
+            ['builtin', 'external'],
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
           named: true,
           'newlines-between': 'always',
         },
@@ -97,7 +102,13 @@ module.exports = [
     },
   },
   {
-    files: ['vite.config.ts'],
+    files: ['eslint.config.js'],
+    rules: {
+      'import/no-default-export': 'off',
+    },
+  },
+  {
+    files: ['vite.config.ts', 'vitest.workspace.ts'],
     rules: {
       'import/no-default-export': 'off',
     },
