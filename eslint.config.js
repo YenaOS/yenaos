@@ -3,6 +3,7 @@ const prettierConfig = require('eslint-config-prettier');
 const functionalPlugin = require('eslint-plugin-functional').default;
 const importPlugin = require('eslint-plugin-import');
 const reactPlugin = require('eslint-plugin-react');
+const testingLibraryPlugin = require('eslint-plugin-testing-library');
 
 module.exports = [
   ...nx.configs['flat/base'],
@@ -11,6 +12,8 @@ module.exports = [
   reactPlugin.configs.flat.all,
   reactPlugin.configs.flat['jsx-runtime'],
   prettierConfig,
+  testingLibraryPlugin.configs['flat/react'],
+  functionalPlugin.configs.off,
   {
     ignores: ['**/dist'],
   },
@@ -36,7 +39,6 @@ module.exports = [
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     // Override or add rules here
     plugins: {
-      functional: functionalPlugin,
       import: importPlugin,
     },
     rules: {
@@ -58,15 +60,25 @@ module.exports = [
           'newlines-between': 'always',
         },
       ],
-      'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
-      'react/jsx-max-depth': ['error', { max: 5 }],
+      'react/jsx-filename-extension': [
+        'error',
+        {
+          extensions: ['.tsx'],
+        },
+      ],
+      'react/jsx-max-depth': [
+        'error',
+        {
+          max: 5,
+        },
+      ],
       'react/jsx-no-bind': [
         'error',
         {
           allowArrowFunctions: true,
         },
       ],
-      'react/jsx-no-literals': ['off'],
+      'react/jsx-no-literals': 'off',
       'react/function-component-definition': [
         'error',
         {
@@ -89,6 +101,10 @@ module.exports = [
     rules: {
       'import/no-default-export': 'off',
     },
+  },
+  {
+    files: ['**/*.(spec|test).(ts|js)'],
+    rules: {},
   },
   {
     files: ['playwright.config.ts'],
