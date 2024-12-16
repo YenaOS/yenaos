@@ -20,7 +20,7 @@
   },
   "namedInputs": {
     "default": ["sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/verify.yml"]
   },
   "plugins": [
     {
