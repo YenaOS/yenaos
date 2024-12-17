@@ -1,23 +1,11 @@
-import '@testing-library/jest-dom/vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { range } from 'lodash';
-import type { ReactNode } from 'react';
 
-import { setupInternationalization } from '../../i18n';
+import { renderWithProviders } from '../../testUtils';
 
 import { Calculator } from './Calculator';
 
-const renderWithProviders = (ui: ReactNode) => ({
-  ...render(ui),
-  user: userEvent.setup(),
-});
-
 describe(Calculator, () => {
-  beforeAll(() => {
-    setupInternationalization();
-  });
-
   it('should render 0 as default display value', async () => {
     renderWithProviders(<Calculator />);
 
