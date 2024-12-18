@@ -1,10 +1,16 @@
 import { Box, Button, Input, styled, Tooltip } from '@mui/material';
 import { isNaN } from 'lodash';
+import { useEffect, useRef } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 
 import { Operation, useCalculator } from './useCalculator';
 
-export const Calculator = () => {
+interface Props {
+  readonly autoFocus?: boolean;
+}
+
+export const Calculator = ({ autoFocus }: Props) => {
   const { t } = useTranslation('calculator');
 
   const {
@@ -25,6 +31,105 @@ export const Calculator = () => {
 
   const handleClear = () => (input ? clearInput() : reset());
 
+  const digitHotkeyRef = useHotkeys<HTMLDivElement>(
+    digits.map(String),
+    (_, event) => {
+      insertDigit(Number(event.hotkey));
+    },
+  );
+  const decimalPointHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['period', 'numpaddecimal'],
+    () => {
+      insertDecimalSeparator();
+    },
+  );
+  const clearHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['escape', 'alt+escape'],
+    (_, event) => {
+      if (event.alt) {
+        reset();
+      } else {
+        clearInput();
+      }
+    },
+  );
+  const negateHotkeyRef = useHotkeys<HTMLDivElement>('alt+minus', () => {
+    negate();
+  });
+  const perCentHotkeyRef = useHotkeys<HTMLDivElement>('shift+5', () => {
+    perCent();
+  });
+  const divideHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['slash', 'divide', 'numpaddivide'],
+    () => {
+      setOperation(Operation.Divide);
+    },
+  );
+  const multiplyHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['shift+8', 'multiply'],
+    () => {
+      setOperation(Operation.Multiply);
+    },
+  );
+  const subtractHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['minus', 'subtract'],
+    () => {
+      setOperation(Operation.Subtract);
+    },
+  );
+  const addHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['shift+equal', 'add'],
+    () => {
+      setOperation(Operation.Add);
+    },
+  );
+  const equalHotkeyRef = useHotkeys<HTMLDivElement>(
+    ['enter', 'equal', 'numpadenter'],
+    () => {
+      calculate();
+    },
+  );
+
+  const ref = useRef<HTMLDivElement>();
+
+  useEffect(() => {
+    const { current } = ref;
+
+    if (!current) {
+      return;
+    }
+
+    [
+      addHotkeyRef,
+      clearHotkeyRef,
+      decimalPointHotkeyRef,
+      digitHotkeyRef,
+      divideHotkeyRef,
+      equalHotkeyRef,
+      multiplyHotkeyRef,
+      negateHotkeyRef,
+      perCentHotkeyRef,
+      subtractHotkeyRef,
+    ].forEach((r) => r(current));
+
+    if (ref.current && autoFocus) {
+      ref.current.focus();
+    }
+  }, [
+    addHotkeyRef,
+    autoFocus,
+    clearHotkeyRef,
+    decimalPointHotkeyRef,
+    digitHotkeyRef,
+    divideHotkeyRef,
+    equalHotkeyRef,
+    multiplyHotkeyRef,
+    negateHotkeyRef,
+    perCentHotkeyRef,
+    subtractHotkeyRef,
+    ref,
+  ]);
+
   return (
     <Box
       display="grid"
@@ -37,9 +142,11 @@ export const Calculator = () => {
         'digit0 digit0 decimalPoint equal'
       "
       gridTemplateColumns="repeat(4, 25%)"
+      ref={ref}
       sx={{
         backgroundColor: '#222222',
       }}
+      tabIndex={-1}
       width={230}
     >
       <Box gridArea="input">

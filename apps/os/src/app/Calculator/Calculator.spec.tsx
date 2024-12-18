@@ -57,6 +57,22 @@ describe(Calculator, () => {
           expect(screen.getByRole('textbox')).toHaveValue(expected);
         },
       );
+
+      it('should handle primary hotkey', async () => {
+        const { user } = renderWithProviders(<Calculator autoFocus />);
+
+        await user.keyboard(digit.toString());
+
+        expect(screen.getByRole('textbox')).toHaveValue(digit.toString());
+      });
+
+      it('should handle secondary hotkey', async () => {
+        const { user } = renderWithProviders(<Calculator autoFocus />);
+
+        await user.keyboard(`numpad${digit}`);
+
+        expect(screen.getByRole('textbox')).toHaveValue(digit.toString());
+      });
     });
   });
 
@@ -93,6 +109,22 @@ describe(Calculator, () => {
       await user.click(screen.getByRole('button', { name: /decimal point/i }));
 
       await user.click(screen.getByRole('button', { name: /decimal point/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.');
+    });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('[period]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('[numpaddecimal]');
 
       expect(screen.getByRole('textbox')).toHaveValue('0.');
     });
@@ -143,6 +175,14 @@ describe(Calculator, () => {
       await user.click(screen.getByRole('button', { name: '1' }));
 
       await user.click(screen.getByRole('button', { name: /clear/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
+    });
+
+    it('should clear display value using keyboard', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[esc]');
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
     });
@@ -216,6 +256,14 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
     });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{alt>}[minus]{/alt}');
+
+      expect(screen.getByRole('textbox')).toHaveValue('-1');
+    });
   });
 
   describe('per cent action', () => {
@@ -267,6 +315,14 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
     });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{shift>}5{/shift}');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.01');
+    });
   });
 
   describe('divide action', () => {
@@ -311,6 +367,22 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('Not a number');
     });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[slash]2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.5');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[numpaddivide]2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0.5');
+    });
   });
 
   describe('multiply action', () => {
@@ -344,6 +416,22 @@ describe(Calculator, () => {
       await user.click(screen.getByRole('button', { name: '3' }));
 
       await user.click(screen.getByRole('button', { name: /equal/i }));
+
+      expect(screen.getByRole('textbox')).toHaveValue('6');
+    });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('2{Shift>}8{/Shift}3[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('6');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('2[numpadmultiply]3[equal]');
 
       expect(screen.getByRole('textbox')).toHaveValue('6');
     });
@@ -383,6 +471,22 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('-1');
     });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[minus]2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('-1');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[numpadsubtract]2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('-1');
+    });
   });
 
   describe('add action', () => {
@@ -415,6 +519,22 @@ describe(Calculator, () => {
 
       expect(screen.getByRole('textbox')).toHaveValue('3');
     });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{Shift>}[equal]{/Shift}2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[numpadadd]2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
+    });
   });
 
   describe('equal action', () => {
@@ -436,6 +556,30 @@ describe(Calculator, () => {
           name: /equal \(or press return\)/i,
         }),
       ).toBeInTheDocument();
+    });
+
+    it('should handle primary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{shift>}[equal]{/shift}2[enter]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
+    });
+
+    it('should handle secondary hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{shift>}[equal]{/shift}2[equal]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
+    });
+
+    it('should handle secondary 2 hotkey', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1{shift>}[equal]{/shift}2[numpadenter]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('3');
     });
   });
 });

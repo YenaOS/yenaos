@@ -83,6 +83,7 @@ export default [
           allowArrowFunctions: true,
         },
       ],
+      'react/jsx-sort-props': 'error',
       'react/jsx-no-literals': 'off',
       'react/function-component-definition': [
         'error',
