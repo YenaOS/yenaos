@@ -170,7 +170,7 @@ export const Calculator = ({ autoFocus }: Props) => {
       <Box gridArea="clear">
         <Tooltip describeChild title={t('clearTooltip')}>
           <SecondaryActionButton
-            aria-label={t('clear')}
+            aria-label={t(input ? 'clear' : 'clearAll')}
             fullWidth
             onClick={handleClear}
           >

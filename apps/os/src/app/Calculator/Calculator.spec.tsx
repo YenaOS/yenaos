@@ -135,14 +135,14 @@ describe(Calculator, () => {
       renderWithProviders(<Calculator />);
 
       expect(
-        screen.getByRole('button', { name: /clear/i }),
+        screen.getByRole('button', { name: /^clear all$/i }),
       ).toBeInTheDocument();
     });
 
     it('should render tooltip', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
-      await user.hover(screen.getByRole('button', { name: /clear/i }));
+      await user.hover(screen.getByRole('button', { name: /^clear all$/i }));
 
       expect(
         await screen.findByRole('tooltip', {
@@ -151,22 +151,14 @@ describe(Calculator, () => {
       ).toBeInTheDocument();
     });
 
-    it('should render as clear all by default', async () => {
-      renderWithProviders(<Calculator />);
-
-      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
-        /^ac$/i,
-      );
-    });
-
     it('should render as clear when display value is set', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
       await user.click(screen.getByRole('button', { name: '0' }));
 
-      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
-        /^c$/i,
-      );
+      expect(
+        screen.getByRole('button', { name: /^clear$/i }),
+      ).toHaveTextContent(/^c$/i);
     });
 
     it('should clear display value', async () => {
@@ -174,7 +166,7 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: '1' }));
 
-      await user.click(screen.getByRole('button', { name: /clear/i }));
+      await user.click(screen.getByRole('button', { name: /^clear$/i }));
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
     });
@@ -192,11 +184,11 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: '0' }));
 
-      await user.click(screen.getByRole('button', { name: /clear/i }));
+      await user.click(screen.getByRole('button', { name: /^clear$/i }));
 
-      expect(screen.getByRole('button', { name: /clear/i })).toHaveTextContent(
-        /^ac$/i,
-      );
+      expect(
+        screen.getByRole('button', { name: /^clear all$/i }),
+      ).toHaveTextContent(/^ac$/i);
     });
 
     it('should only clear input when first operand is set', async () => {
@@ -208,7 +200,7 @@ describe(Calculator, () => {
 
       await user.click(screen.getByRole('button', { name: '2' }));
 
-      await user.click(screen.getByRole('button', { name: /clear/i }));
+      await user.click(screen.getByRole('button', { name: /^clear$/i }));
 
       await user.click(screen.getByRole('button', { name: '3' }));
 

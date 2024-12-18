@@ -2,6 +2,7 @@
   "add": "Add",
   "addTooltip": "Add (or press +)",
   "clear": "Clear",
+  "clearAll": "Clear All",
   "clearTooltip": "Clear (Esc); Clear All (Opt-Esc)",
   "decimalPoint": "Decimal point",
   "divide": "Divide",
