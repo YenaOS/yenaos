@@ -32,12 +32,9 @@ export const Calculator = ({ autoFocus }: Props) => {
 
   const handleClear = () => (input ? clearInput() : reset());
 
-  const digitHotkeyRef = useHotkeys<HTMLDivElement>(
-    digits.map(String),
-    (_, event) => {
-      insertDigit(Number(event.hotkey));
-    },
-  );
+  const digitHotkeyRef = useHotkeys<HTMLDivElement>(digits, (_, event) => {
+    insertDigit(event.hotkey);
+  });
   const decimalPointHotkeyRef = useHotkeys<HTMLDivElement>(
     ['period', 'numpaddecimal'],
     () => {

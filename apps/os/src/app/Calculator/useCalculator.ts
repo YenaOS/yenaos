@@ -1,7 +1,7 @@
 import { range } from 'lodash';
 import { useState } from 'react';
 
-const digits = range(0, 10);
+const digits: readonly string[] = range(0, 10).map(String);
 
 const decimalSeparator = '.';
 
@@ -21,11 +21,11 @@ interface UseCalculatorResult {
   clearInput(): void;
   readonly decimalSeparator: string;
   deleteLastCharacter(): void;
-  readonly digits: readonly number[];
+  readonly digits: readonly string[];
   readonly input: string;
   readonly inputFallback: string;
   insertDecimalSeparator(): void;
-  insertDigit(value: number): void;
+  insertDigit(value: string): void;
   negate(): void;
   readonly operation: Operation | undefined;
   perCent(): void;
@@ -42,12 +42,12 @@ export const useCalculator = (): UseCalculatorResult => {
 
   const [result, setResult] = useState<number | undefined>();
 
-  const insertDigit = (value: number) => {
+  const insertDigit = (value: string) => {
     if (!digits.includes(value)) {
       return;
     }
 
-    setInput(isInputEmpty(input) ? value.toString() : input + value);
+    setInput(isInputEmpty(input) ? value : input + value);
   };
 
   const insertDecimalSeparator = () => {

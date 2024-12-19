@@ -13,46 +13,32 @@ describe(Calculator, () => {
   });
 
   describe('digit actions', () => {
-    describe.each(
-      range(0, 10).map((digit) => ({
-        digit,
-      })),
-    )('digit $digit action', ({ digit }) => {
+    describe.each(range(0, 10).map(String))('digit %s action', (digit) => {
       it('should render button', async () => {
         renderWithProviders(<Calculator />);
 
-        expect(
-          screen.getByRole('button', { name: digit.toString() }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: digit })).toBeInTheDocument();
       });
 
       it('should replace default display value when clicked one time', async () => {
         const { user } = renderWithProviders(<Calculator />);
 
-        await user.click(
-          screen.getByRole('button', { name: digit.toString() }),
-        );
+        await user.click(screen.getByRole('button', { name: digit }));
 
-        const expected = digit.toString();
-
-        expect(screen.getByRole('textbox')).toHaveValue(expected);
+        expect(screen.getByRole('textbox')).toHaveValue(digit);
       });
 
       it(
-        digit === 0
+        digit === '0'
           ? 'should not change display value when clicked multiple times'
           : 'should append digit to display value when clicked multiple times',
         async () => {
           const { user } = renderWithProviders(<Calculator />);
 
-          await user.click(
-            screen.getByRole('button', { name: digit.toString() }),
-          );
-          await user.click(
-            screen.getByRole('button', { name: digit.toString() }),
-          );
+          await user.click(screen.getByRole('button', { name: digit }));
+          await user.click(screen.getByRole('button', { name: digit }));
 
-          const expected = digit.toString().repeat(!digit ? 1 : 2);
+          const expected = digit.repeat(digit === '0' ? 1 : 2);
 
           expect(screen.getByRole('textbox')).toHaveValue(expected);
         },
@@ -61,9 +47,9 @@ describe(Calculator, () => {
       it('should handle primary hotkey', async () => {
         const { user } = renderWithProviders(<Calculator autoFocus />);
 
-        await user.keyboard(digit.toString());
+        await user.keyboard(digit);
 
-        expect(screen.getByRole('textbox')).toHaveValue(digit.toString());
+        expect(screen.getByRole('textbox')).toHaveValue(digit);
       });
 
       it('should handle secondary hotkey', async () => {
@@ -71,7 +57,7 @@ describe(Calculator, () => {
 
         await user.keyboard(`numpad${digit}`);
 
-        expect(screen.getByRole('textbox')).toHaveValue(digit.toString());
+        expect(screen.getByRole('textbox')).toHaveValue(digit);
       });
     });
   });
