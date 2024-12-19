@@ -5,11 +5,6 @@ import { renderWithProviders } from '../../testUtils';
 
 import { Calculator } from './Calculator';
 
-// TODO: render vs display, etc.
-// TODO: rename negate to smth like negate input?
-// TODO: rename per cent?
-// TODO: not a number as regexp?
-// TODO: rethink digit actions tests
 describe(Calculator, () => {
   it('should render 0 by default', async () => {
     renderWithProviders(<Calculator />);

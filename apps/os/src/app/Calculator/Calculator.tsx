@@ -19,18 +19,24 @@ export const Calculator = ({ autoFocus }: Props) => {
     decimalSeparator,
     deleteLastCharacter,
     digits,
+    hasInput,
+    hasResult,
     input,
     inputFallback,
     insertDecimalSeparator,
     insertDigit,
     negate,
+    operation,
     perCent,
     reset,
     result,
     setOperation,
   } = useCalculator();
 
-  const handleClear = () => (input ? clearInput() : reset());
+  const useClearInput = input && !result;
+
+  const handleClearAll = () => reset();
+  const handleClear = () => clearInput();
 
   const digitHotkeyRef = useHotkeys<HTMLDivElement>(digits, (_, event) => {
     insertDigit(event.hotkey);
@@ -87,11 +93,7 @@ export const Calculator = ({ autoFocus }: Props) => {
   );
   const equalHotkeyRef = useHotkeys<HTMLDivElement>(
     ['enter', 'equal', 'numpadenter'],
-    (_, event) => {
-      if (!['equal', 'enter'].includes(event.hotkey)) {
-        return;
-      }
-
+    () => {
       calculate();
     },
   );
@@ -138,6 +140,8 @@ export const Calculator = ({ autoFocus }: Props) => {
     ref,
   ]);
 
+  const disableOperations = !!operation && hasInput;
+
   return (
     <Box
       display="grid"
@@ -177,19 +181,30 @@ export const Calculator = ({ autoFocus }: Props) => {
       </Box>
       <Box gridArea="clear">
         <Tooltip describeChild title={t('clearTooltip')}>
-          <SecondaryActionButton
-            aria-label={t(input ? 'clear' : 'clearAll')}
-            fullWidth
-            onClick={handleClear}
-          >
-            {input ? 'C' : 'AC'}
-          </SecondaryActionButton>
+          {useClearInput ? (
+            <SecondaryActionButton
+              aria-label={t('clear')}
+              fullWidth
+              onClick={handleClear}
+            >
+              C
+            </SecondaryActionButton>
+          ) : (
+            <SecondaryActionButton
+              aria-label={t('clearAll')}
+              fullWidth
+              onClick={handleClearAll}
+            >
+              AC
+            </SecondaryActionButton>
+          )}
         </Tooltip>
       </Box>
       <Box gridArea="negate">
         <Tooltip describeChild title={t('negateTooltip')}>
           <SecondaryActionButton
             aria-label={t('negate')}
+            disabled={hasResult}
             fullWidth
             onClick={negate}
           >
@@ -201,6 +216,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('perCentTooltip')}>
           <SecondaryActionButton
             aria-label={t('perCent')}
+            disabled={hasResult}
             fullWidth
             onClick={perCent}
           >
@@ -210,7 +226,11 @@ export const Calculator = ({ autoFocus }: Props) => {
       </Box>
       {digits.map((digit) => (
         <Box gridArea={`digit${digit}`} key={digit}>
-          <ActionButton fullWidth onClick={() => insertDigit(digit)}>
+          <ActionButton
+            disabled={hasResult}
+            fullWidth
+            onClick={() => insertDigit(digit)}
+          >
             {digit}
           </ActionButton>
         </Box>
@@ -218,6 +238,7 @@ export const Calculator = ({ autoFocus }: Props) => {
       <Box gridArea="decimalPoint" key="decimal-point">
         <ActionButton
           aria-label={t('decimalPoint')}
+          disabled={hasResult}
           fullWidth
           onClick={insertDecimalSeparator}
         >
@@ -228,6 +249,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('divideTooltip')}>
           <PrimaryActionButton
             aria-label={t('divide')}
+            disabled={disableOperations}
             fullWidth
             onClick={() => setOperation(Operation.Divide)}
           >
@@ -239,6 +261,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('multiplyTooltip')}>
           <PrimaryActionButton
             aria-label={t('multiply')}
+            disabled={disableOperations}
             fullWidth
             onClick={() => setOperation(Operation.Multiply)}
           >
@@ -250,6 +273,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('subtractTooltip')}>
           <PrimaryActionButton
             aria-label={t('subtract')}
+            disabled={disableOperations}
             fullWidth
             onClick={() => setOperation(Operation.Subtract)}
           >
@@ -261,6 +285,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('addTooltip')}>
           <PrimaryActionButton
             aria-label={t('add')}
+            disabled={disableOperations}
             fullWidth
             onClick={() => setOperation(Operation.Add)}
           >
@@ -272,6 +297,7 @@ export const Calculator = ({ autoFocus }: Props) => {
         <Tooltip describeChild title={t('equalTooltip')}>
           <PrimaryActionButton
             aria-label={t('equal')}
+            disabled={hasResult}
             fullWidth
             onClick={calculate}
           >

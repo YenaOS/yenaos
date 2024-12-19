@@ -31,6 +31,8 @@ interface UseCalculatorResult {
   readonly decimalSeparator: string;
   deleteLastCharacter(): void;
   readonly digits: readonly string[];
+  readonly hasInput: boolean;
+  readonly hasResult: boolean;
   readonly input: string;
   readonly inputFallback: string;
   insertDecimalSeparator(): void;
@@ -124,6 +126,8 @@ export const useCalculator = (): UseCalculatorResult => {
     decimalSeparator,
     deleteLastCharacter,
     digits,
+    hasInput: !isInputEmpty(input),
+    hasResult: !!result,
     input,
     inputFallback,
     insertDecimalSeparator,
