@@ -1,0 +1,22 @@
+name: Formatting Check
+
+on:
+  pull_request:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Cache node_modules
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - run: npm ci --legacy-peer-deps
+
+      - run: npx nx format:check
