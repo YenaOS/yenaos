@@ -87,7 +87,11 @@ export const Calculator = ({ autoFocus }: Props) => {
   );
   const equalHotkeyRef = useHotkeys<HTMLDivElement>(
     ['enter', 'equal', 'numpadenter'],
-    () => {
+    (_, event) => {
+      if (!['equal', 'enter'].includes(event.hotkey)) {
+        return;
+      }
+
       calculate();
     },
   );

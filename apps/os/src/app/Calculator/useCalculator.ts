@@ -14,6 +14,15 @@ export enum Operation {
   Subtract = '-',
 }
 
+type OperationExecutor = (a: number, b: number) => number;
+
+const operationExecutors: Readonly<Record<Operation, OperationExecutor>> = {
+  [Operation.Add]: (a, b) => a + b,
+  [Operation.Divide]: (a, b) => a / b,
+  [Operation.Multiply]: (a, b) => a * b,
+  [Operation.Subtract]: (a, b) => a - b,
+};
+
 const isInputEmpty = (value: string) => !value || value === inputFallback;
 
 interface UseCalculatorResult {
@@ -59,7 +68,9 @@ export const useCalculator = (): UseCalculatorResult => {
   };
 
   const deleteLastCharacter = () =>
-    setInput((value) => value.substring(0, value.length - 1));
+    setInput((value) =>
+      value ? value.substring(0, value.length - 1) || inputFallback : value,
+    );
 
   const setOperation = (value: Operation) => {
     if (!operand) {
@@ -98,20 +109,9 @@ export const useCalculator = (): UseCalculatorResult => {
     const leftOperand = Number(operand);
     const rightOperand = Number(input);
 
-    const performOperation = (a: number, b: number, op: Operation) => {
-      switch (op) {
-        case Operation.Add:
-          return a + b;
-        case Operation.Subtract:
-          return a - b;
-        case Operation.Multiply:
-          return a * b;
-        case Operation.Divide:
-          return a / b;
-      }
-    };
+    const executor = operationExecutors[op];
 
-    const result = performOperation(leftOperand, rightOperand, op);
+    const result = executor(leftOperand, rightOperand);
 
     setResult(result);
 
