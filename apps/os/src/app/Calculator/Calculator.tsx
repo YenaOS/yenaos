@@ -17,6 +17,7 @@ export const Calculator = ({ autoFocus }: Props) => {
     calculate,
     clearInput,
     decimalSeparator,
+    deleteLastCharacter,
     digits,
     input,
     inputFallback,
@@ -42,6 +43,10 @@ export const Calculator = ({ autoFocus }: Props) => {
     () => {
       insertDecimalSeparator();
     },
+  );
+  const deleteLastCharacterHotkeyRef = useHotkeys<HTMLDivElement>(
+    'backspace',
+    () => deleteLastCharacter(),
   );
   const clearHotkeyRef = useHotkeys<HTMLDivElement>(
     ['escape', 'alt+escape'],
@@ -103,6 +108,7 @@ export const Calculator = ({ autoFocus }: Props) => {
       addHotkeyRef,
       clearHotkeyRef,
       decimalPointHotkeyRef,
+      deleteLastCharacterHotkeyRef,
       digitHotkeyRef,
       divideHotkeyRef,
       equalHotkeyRef,
@@ -120,6 +126,7 @@ export const Calculator = ({ autoFocus }: Props) => {
     autoFocus,
     clearHotkeyRef,
     decimalPointHotkeyRef,
+    deleteLastCharacterHotkeyRef,
     digitHotkeyRef,
     divideHotkeyRef,
     equalHotkeyRef,

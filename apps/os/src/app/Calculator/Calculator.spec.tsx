@@ -130,6 +130,24 @@ describe(Calculator, () => {
     });
   });
 
+  describe('delete character action', () => {
+    it('should delete last character', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('1[backspace]');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
+    });
+
+    it('should not change input when empty', async () => {
+      const { user } = renderWithProviders(<Calculator autoFocus />);
+
+      await user.keyboard('backspace');
+
+      expect(screen.getByRole('textbox')).toHaveValue('0');
+    });
+  });
+
   describe('clear action', () => {
     it('should render button', async () => {
       renderWithProviders(<Calculator />);

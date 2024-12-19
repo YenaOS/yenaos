@@ -14,12 +14,13 @@ export enum Operation {
   Subtract = '-',
 }
 
-const isInputEmpty = (value: string) => !value || value === '0';
+const isInputEmpty = (value: string) => !value || value === inputFallback;
 
 interface UseCalculatorResult {
   calculate(): void;
   clearInput(): void;
   readonly decimalSeparator: string;
+  deleteLastCharacter(): void;
   readonly digits: readonly number[];
   readonly input: string;
   readonly inputFallback: string;
@@ -56,6 +57,9 @@ export const useCalculator = (): UseCalculatorResult => {
 
     setInput((input || inputFallback) + decimalSeparator);
   };
+
+  const deleteLastCharacter = () =>
+    setInput((value) => value.substring(0, value.length - 1));
 
   const setOperation = (value: Operation) => {
     if (!operand) {
@@ -118,6 +122,7 @@ export const useCalculator = (): UseCalculatorResult => {
     calculate,
     clearInput,
     decimalSeparator,
+    deleteLastCharacter,
     digits,
     input,
     inputFallback,
