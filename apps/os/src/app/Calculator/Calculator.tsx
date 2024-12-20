@@ -1,6 +1,6 @@
 import { Box, Button, ButtonProps, Input, styled, Tooltip } from '@mui/material';
 import { isNaN } from 'lodash';
-import { useCallback, useEffect, useRef } from 'react';
+import { forwardRef, Ref, useCallback, useEffect, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 
@@ -320,11 +320,11 @@ interface DigitButtonProps extends Omit<ButtonProps, 'onClick'> {
   readonly value: string;
 }
 
-const DigitButton = ({ onClick, value, ...props }: DigitButtonProps) => {
+const DigitButton = forwardRef(({ onClick, value, ...props }: DigitButtonProps) => {
   const handleClick = useCallback(() => onClick?.(value), [onClick, value]);
 
   return <ActionButton {...props} onClick={handleClick} />;
-};
+});
 
 const PrimaryActionButton = styled(AppButton)({
   backgroundColor: '#ff9f0b',
@@ -335,11 +335,13 @@ interface OperationButtonProps extends Omit<ButtonProps, 'onClick'> {
   readonly value: Operation;
 }
 
-const OperationButton = ({ onClick, value, ...props }: OperationButtonProps) => {
-  const handleClick = useCallback(() => onClick?.(value), [onClick, value]);
+const OperationButton = forwardRef(
+  ({ onClick, value, ...props }: OperationButtonProps, ref: Ref<HTMLButtonElement>) => {
+    const handleClick = useCallback(() => onClick?.(value), [onClick, value]);
 
-  return <PrimaryActionButton {...props} onClick={handleClick} />;
-};
+    return <PrimaryActionButton {...props} onClick={handleClick} ref={ref} />;
+  },
+);
 
 const SecondaryActionButton = styled(AppButton)({
   backgroundColor: '#383838',
