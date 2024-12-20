@@ -1,6 +1,6 @@
-import { Box, Button, Input, styled, Tooltip } from '@mui/material';
+import { Box, Button, ButtonProps, Input, styled, Tooltip } from '@mui/material';
 import { isNaN } from 'lodash';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 
@@ -35,22 +35,27 @@ export const Calculator = ({ autoFocus }: Props) => {
 
   const useClearInput = input && !result;
 
-  const handleClearAll = () => reset();
-  const handleClear = () => clearInput();
+  const handleClearAll = useCallback(() => reset(), [reset]);
 
-  const digitHotkeyRef = useHotkeys<HTMLDivElement>(digits, (_, event) => {
-    insertDigit(event.hotkey);
-  });
+  const handleClear = useCallback(() => clearInput(), [clearInput]);
+
+  const digitHotkeyRef = useHotkeys<HTMLDivElement>(
+    digits,
+    (_, event) => {
+      insertDigit(event.hotkey);
+    },
+    [insertDigit],
+  );
   const decimalPointHotkeyRef = useHotkeys<HTMLDivElement>(
     ['period', 'numpaddecimal'],
     () => {
       insertDecimalSeparator();
     },
+    [insertDecimalSeparator],
   );
-  const deleteLastCharacterHotkeyRef = useHotkeys<HTMLDivElement>(
-    'backspace',
-    () => deleteLastCharacter(),
-  );
+  const deleteLastCharacterHotkeyRef = useHotkeys<HTMLDivElement>('backspace', () => deleteLastCharacter(), [
+    deleteLastCharacter,
+  ]);
   const clearHotkeyRef = useHotkeys<HTMLDivElement>(
     ['escape', 'alt+escape'],
     (_, event) => {
@@ -60,42 +65,56 @@ export const Calculator = ({ autoFocus }: Props) => {
         clearInput();
       }
     },
+    [clearInput, reset],
   );
-  const negateHotkeyRef = useHotkeys<HTMLDivElement>('alt+minus', () => {
-    negate();
-  });
-  const perCentHotkeyRef = useHotkeys<HTMLDivElement>('shift+5', () => {
-    perCent();
-  });
+  const negateHotkeyRef = useHotkeys<HTMLDivElement>(
+    'alt+minus',
+    () => {
+      negate();
+    },
+    [negate],
+  );
+  const perCentHotkeyRef = useHotkeys<HTMLDivElement>(
+    'shift+5',
+    () => {
+      perCent();
+    },
+    [perCent],
+  );
   const divideHotkeyRef = useHotkeys<HTMLDivElement>(
     ['slash', 'divide', 'numpaddivide'],
     () => {
       setOperation(Operation.Divide);
     },
+    [setOperation],
   );
   const multiplyHotkeyRef = useHotkeys<HTMLDivElement>(
     ['shift+8', 'multiply'],
     () => {
       setOperation(Operation.Multiply);
     },
+    [setOperation],
   );
   const subtractHotkeyRef = useHotkeys<HTMLDivElement>(
     ['minus', 'subtract'],
     () => {
       setOperation(Operation.Subtract);
     },
+    [setOperation],
   );
   const addHotkeyRef = useHotkeys<HTMLDivElement>(
     ['shift+equal', 'add'],
     () => {
       setOperation(Operation.Add);
     },
+    [setOperation],
   );
   const equalHotkeyRef = useHotkeys<HTMLDivElement>(
     ['enter', 'equal', 'numpadenter'],
     () => {
       calculate();
     },
+    [calculate],
   );
 
   const ref = useRef<HTMLDivElement>();
@@ -136,8 +155,8 @@ export const Calculator = ({ autoFocus }: Props) => {
     multiplyHotkeyRef,
     negateHotkeyRef,
     perCentHotkeyRef,
-    subtractHotkeyRef,
     ref,
+    subtractHotkeyRef,
   ]);
 
   const disableOperations = !!operation && hasInput;
@@ -182,19 +201,11 @@ export const Calculator = ({ autoFocus }: Props) => {
       <Box gridArea="clear">
         <Tooltip describeChild title={t('clearTooltip')}>
           {useClearInput ? (
-            <SecondaryActionButton
-              aria-label={t('clear')}
-              fullWidth
-              onClick={handleClear}
-            >
+            <SecondaryActionButton aria-label={t('clear')} fullWidth onClick={handleClear}>
               C
             </SecondaryActionButton>
           ) : (
-            <SecondaryActionButton
-              aria-label={t('clearAll')}
-              fullWidth
-              onClick={handleClearAll}
-            >
+            <SecondaryActionButton aria-label={t('clearAll')} fullWidth onClick={handleClearAll}>
               AC
             </SecondaryActionButton>
           )}
@@ -202,105 +213,85 @@ export const Calculator = ({ autoFocus }: Props) => {
       </Box>
       <Box gridArea="negate">
         <Tooltip describeChild title={t('negateTooltip')}>
-          <SecondaryActionButton
-            aria-label={t('negate')}
-            disabled={hasResult}
-            fullWidth
-            onClick={negate}
-          >
+          <SecondaryActionButton aria-label={t('negate')} disabled={hasResult} fullWidth onClick={negate}>
             &#177;
           </SecondaryActionButton>
         </Tooltip>
       </Box>
       <Box gridArea="perCent">
         <Tooltip describeChild title={t('perCentTooltip')}>
-          <SecondaryActionButton
-            aria-label={t('perCent')}
-            disabled={hasResult}
-            fullWidth
-            onClick={perCent}
-          >
+          <SecondaryActionButton aria-label={t('perCent')} disabled={hasResult} fullWidth onClick={perCent}>
             &#37;
           </SecondaryActionButton>
         </Tooltip>
       </Box>
       {digits.map((digit) => (
         <Box gridArea={`digit${digit}`} key={digit}>
-          <ActionButton
-            disabled={hasResult}
-            fullWidth
-            onClick={() => insertDigit(digit)}
-          >
+          <DigitButton disabled={hasResult} fullWidth onClick={insertDigit} value={digit}>
             {digit}
-          </ActionButton>
+          </DigitButton>
         </Box>
       ))}
       <Box gridArea="decimalPoint" key="decimal-point">
-        <ActionButton
-          aria-label={t('decimalPoint')}
-          disabled={hasResult}
-          fullWidth
-          onClick={insertDecimalSeparator}
-        >
+        <ActionButton aria-label={t('decimalPoint')} disabled={hasResult} fullWidth onClick={insertDecimalSeparator}>
           {decimalSeparator}
         </ActionButton>
       </Box>
       <Box gridArea="divide">
         <Tooltip describeChild title={t('divideTooltip')}>
-          <PrimaryActionButton
+          <OperationButton
             aria-label={t('divide')}
             disabled={disableOperations}
             fullWidth
-            onClick={() => setOperation(Operation.Divide)}
+            onClick={setOperation}
+            value={Operation.Divide}
           >
             &#247;
-          </PrimaryActionButton>
+          </OperationButton>
         </Tooltip>
       </Box>
       <Box gridArea="multiply">
         <Tooltip describeChild title={t('multiplyTooltip')}>
-          <PrimaryActionButton
+          <OperationButton
             aria-label={t('multiply')}
             disabled={disableOperations}
             fullWidth
-            onClick={() => setOperation(Operation.Multiply)}
+            onClick={setOperation}
+            value={Operation.Multiply}
           >
             &#215;
-          </PrimaryActionButton>
+          </OperationButton>
         </Tooltip>
       </Box>
       <Box gridArea="subtract">
         <Tooltip describeChild title={t('subtractTooltip')}>
-          <PrimaryActionButton
+          <OperationButton
             aria-label={t('subtract')}
             disabled={disableOperations}
             fullWidth
-            onClick={() => setOperation(Operation.Subtract)}
+            onClick={setOperation}
+            value={Operation.Subtract}
           >
             &#8722;
-          </PrimaryActionButton>
+          </OperationButton>
         </Tooltip>
       </Box>
       <Box gridArea="add">
         <Tooltip describeChild title={t('addTooltip')}>
-          <PrimaryActionButton
+          <OperationButton
             aria-label={t('add')}
             disabled={disableOperations}
             fullWidth
-            onClick={() => setOperation(Operation.Add)}
+            onClick={setOperation}
+            value={Operation.Add}
           >
             &#43;
-          </PrimaryActionButton>
+          </OperationButton>
         </Tooltip>
       </Box>
       <Box gridArea="equal">
         <Tooltip describeChild title={t('equalTooltip')}>
-          <PrimaryActionButton
-            aria-label={t('equal')}
-            disabled={hasResult}
-            fullWidth
-            onClick={calculate}
-          >
+          <PrimaryActionButton aria-label={t('equal')} disabled={hasResult} fullWidth onClick={calculate}>
             &#61;
           </PrimaryActionButton>
         </Tooltip>
@@ -324,9 +315,31 @@ const ActionButton = styled(AppButton)({
   borderRightStyle: 'solid',
 });
 
+interface DigitButtonProps extends Omit<ButtonProps, 'onClick'> {
+  readonly onClick?: (value: string) => void;
+  readonly value: string;
+}
+
+const DigitButton = ({ onClick, value, ...props }: DigitButtonProps) => {
+  const handleClick = useCallback(() => onClick?.(value), [onClick, value]);
+
+  return <ActionButton {...props} onClick={handleClick} />;
+};
+
 const PrimaryActionButton = styled(AppButton)({
   backgroundColor: '#ff9f0b',
 });
+
+interface OperationButtonProps extends Omit<ButtonProps, 'onClick'> {
+  readonly onClick?: (value: Operation) => void;
+  readonly value: Operation;
+}
+
+const OperationButton = ({ onClick, value, ...props }: OperationButtonProps) => {
+  const handleClick = useCallback(() => onClick?.(value), [onClick, value]);
+
+  return <PrimaryActionButton {...props} onClick={handleClick} />;
+};
 
 const SecondaryActionButton = styled(AppButton)({
   backgroundColor: '#383838',

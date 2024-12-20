@@ -70,9 +70,7 @@ describe(Calculator, () => {
         await user.click(screen.getByRole('button', { name: digit }));
 
         expect(screen.getByRole('textbox')).toHaveValue(digit);
-        expect(
-          screen.getByRole('button', { name: /^clear$/i }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /^clear$/i })).toBeInTheDocument();
       });
 
       it('should not add digit when already entered', async () => {
@@ -99,17 +97,13 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^decimal point$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^decimal point$/i })).toBeInTheDocument();
     });
 
     it('should add decimal separator', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
-      await user.click(
-        screen.getByRole('button', { name: /^decimal point$/i }),
-      );
+      await user.click(screen.getByRole('button', { name: /^decimal point$/i }));
 
       expect(screen.getByRole('textbox')).toHaveValue('0.');
     });
@@ -118,9 +112,7 @@ describe(Calculator, () => {
       const { user } = renderWithProviders(<Calculator />);
 
       await user.click(screen.getByRole('button', { name: '1' }));
-      await user.click(
-        screen.getByRole('button', { name: /^decimal point$/i }),
-      );
+      await user.click(screen.getByRole('button', { name: /^decimal point$/i }));
 
       expect(screen.getByRole('textbox')).toHaveValue('1.');
     });
@@ -128,12 +120,8 @@ describe(Calculator, () => {
     it('should not add decimal separator when already present', async () => {
       const { user } = renderWithProviders(<Calculator />);
 
-      await user.click(
-        screen.getByRole('button', { name: /^decimal point$/i }),
-      );
-      await user.click(
-        screen.getByRole('button', { name: /^decimal point$/i }),
-      );
+      await user.click(screen.getByRole('button', { name: /^decimal point$/i }));
+      await user.click(screen.getByRole('button', { name: /^decimal point$/i }));
 
       expect(screen.getByRole('textbox')).toHaveValue('0.');
     });
@@ -170,9 +158,7 @@ describe(Calculator, () => {
       await user.keyboard('1[backspace]');
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
-      expect(
-        screen.getByRole('button', { name: /^clear$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^clear$/i })).toBeInTheDocument();
     });
 
     it('should delete last character when decimal separator', async () => {
@@ -181,9 +167,7 @@ describe(Calculator, () => {
       await user.keyboard('[period][backspace]');
 
       expect(screen.getByRole('textbox')).toHaveValue('0');
-      expect(
-        screen.getByRole('button', { name: /^clear$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^clear$/i })).toBeInTheDocument();
     });
   });
 
@@ -191,9 +175,7 @@ describe(Calculator, () => {
     it('should render clear all by default', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^clear all$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^clear all$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -215,9 +197,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^negate$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^negate$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -262,9 +242,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^per cent$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^per cent$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -317,9 +295,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^divide$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^divide$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -375,9 +351,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^multiply$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^multiply$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -424,9 +398,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^subtract$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^subtract$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -473,9 +445,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^add$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^add$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {
@@ -483,9 +453,7 @@ describe(Calculator, () => {
 
       await user.hover(screen.getByRole('button', { name: /^add$/i }));
 
-      expect(
-        await screen.findByRole('tooltip', { name: /^add \(or press \+\)$/i }),
-      ).toBeInTheDocument();
+      expect(await screen.findByRole('tooltip', { name: /^add \(or press \+\)$/i })).toBeInTheDocument();
     });
 
     it('should perform addition', async () => {
@@ -520,9 +488,7 @@ describe(Calculator, () => {
     it('should render action', async () => {
       renderWithProviders(<Calculator />);
 
-      expect(
-        screen.getByRole('button', { name: /^equal$/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^equal$/i })).toBeInTheDocument();
     });
 
     it('should render action tooltip', async () => {

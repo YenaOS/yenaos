@@ -70,9 +70,7 @@ export const useCalculator = (): UseCalculatorResult => {
   };
 
   const deleteLastCharacter = () =>
-    setInput((value) =>
-      value ? value.substring(0, value.length - 1) || inputFallback : value,
-    );
+    setInput((value) => (value ? value.substring(0, value.length - 1) || inputFallback : value));
 
   const setOperation = (value: Operation) => {
     if (!operand) {
